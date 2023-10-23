@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "target": "es6",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "typeRoots": [
+      "./src/types",
+      "./node_modules/@types"
+    ],
+    "outDir": "./dist",
+    "allowJs": true,
+    "baseUrl": "./src",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "rootDir": "/",
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "allowUnreachableCode": true,
+  },
+  "include": [
+    "next-env.d.ts",
+    "twin.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "./package.json"
+  ],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node",
+  }
+}
