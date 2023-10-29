@@ -1,30 +1,65 @@
-import express, { Request, Response, Application } from 'express';
+import express, { Application } from 'express';
 import dotenv from 'dotenv';
-import run from './src/config/db/'
+import helmet from 'helmet';
+import ExpressMongoSanitize from 'express-mongo-sanitize';
+import compression from 'compression'
+import cors from 'cors'
+import { connect } from './src/config/db/'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import ip from 'ip'
 import chalk from 'chalk'
+import httpStatus from 'http-status';
+import { config } from 'src/config';
+import router from 'src/routes';
+import { errorConverter, errorHandler } from 'src/modules/errors/handleError';
+import ApiError from 'src/modules/errors/apiError';
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const ipAddress = ip.address();
 const log = console.log
-dotenv.config();
+if (config.env)
+	dotenv.config({
+		path: `.env.${config.env}`
+	});
 
 const app: Application = express();
-const port = process.env.PORT || 8000;
+const port = config.port || 8000
+connect()
 
-run()
-
-app.get('/', (req: Request, res: Response) => {
-  res.send('');
-});
-
+app.use(helmet())
+app.use(cors())
+app.options('*', cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(compression())
+app.use(ExpressMongoSanitize());
+app.use('/api', router)
 app.use(express.static(path.join(__dirname, 'public/credentials')))
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/credentials/X509-cert-4908773705758944131.pem'))
+app.get('public/credentials', (_, res) => {
+	res.sendFile(path.join(__dirname, 'public/credentials/X509-cert-4908773705758944131.pem'))
 })
-
-app.listen(port, () => {
-  log(chalk.bgYellow.black(`Server running at: http://${ipAddress}:${port}`));
+app.use(errorConverter)
+app.use(errorHandler)
+app.use((_req, _res, next) => {
+	next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
 });
+
+let server = app.listen(port, () => {
+	log(chalk.bgYellow.black(`Server running at: http://${ipAddress}:${port}`));
+});
+
+let exitHandler = () => {
+	if (server) {
+		server.close(() => process.exit(1))
+	} else {
+		process.exit(1)
+	}
+}
+
+process.on('uncaughtException', () => exitHandler())
+process.on('unhandledRejection', () => exitHandler())
+
+process.on('SIGTERM', () => {
+	if (server) server.close()
+})

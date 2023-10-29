@@ -1,12 +1,10 @@
 import chalk from 'chalk'
 import mongoose from "mongoose";
+import { config } from '..';
 const log = console.log
-let clusterURL = process?.env.REACT_APP_CLUSTER_KEY
-const authMechanism = "MONGODB-X509";
-let clientPEMFile = process.env.REACT_APP_CREDENTIAL_URI_PATH
 
-let run = async () => {
-  await mongoose.connect(`mongodb+srv://${clusterURL}/?authMechanism=${authMechanism}&tls=true&tlsCertificateKeyFile=${clientPEMFile}`)
+export const connect = async () => {
+  await mongoose.connect(config.mongodb.clusterKey)
     .then(async (resp) => {
       log(chalk.bgGreen.black('Database connected succesfully to server.'))
       log(chalk.bgGreen.black(`Host: ${resp?.connection?.host}`))
@@ -17,5 +15,3 @@ let run = async () => {
       return
     })
 }
-
-export default run
