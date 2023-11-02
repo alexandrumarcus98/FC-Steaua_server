@@ -1,8 +1,13 @@
 import express, { Router } from 'express';
-import { loginAdmin } from 'src/controllers/auth/logare';
+import { inregistrareMembru } from 'src/controllers/auth/inregistrare';
+import { logareMembru } from 'src/controllers/auth/logare';
 const router: Router = express.Router();
 router
-	.route('/admin')
-	.post(loginAdmin);
+	.route('/inregistrare')
+	.post(inregistrareMembru);
+
+router
+	.route('/logare')
+	.post(logareMembru);
 
 export default router

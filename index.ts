@@ -26,10 +26,14 @@ if (config.env)
 const app: Application = express();
 const port = config.port || 8000
 connect()
+const corsOptions = {
+	origin: `${process.env.FE_URL}`,
+	credentials: true,
+	optionSuccessStatus: 200,
+}
 
 app.use(helmet())
-app.use(cors())
-app.options('*', cors())
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(compression())

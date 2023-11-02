@@ -1,8 +1,8 @@
 import express, { Router } from 'express';
-import { status } from '../../controllers/auth/status'
+import { detaliiMembru } from 'src/controllers/auth/membru';
 const router: Router = express.Router();
 router
-	.route('/')
-	.post(status);
+	.route('/data')
+	.post(detaliiMembru);
 
 export default router
