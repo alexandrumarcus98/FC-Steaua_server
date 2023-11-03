@@ -3,11 +3,17 @@ import jwt from 'jsonwebtoken'
 import Membru from 'src/models/membru';
 
 const detaliiMembru: any = asyncHandler(async (req, res): Promise<any> => {
-	const token = req.header('Cookie').split("jwt_authorization_steaua=")[1];
-	console.log(req.header('Cookie'))
-	let decodedToken = jwt.decode(token)
+	const cookies = req.header('Cookie').split(";")
+	let foundToken = ''
+	cookies.forEach(k => {
+		console.log(k)
+		if (k.startsWith(' jwt') || k.startsWith('jwt')) {
+			foundToken = k.split('=')[1]
+		}
+	})
+	let decodedToken = jwt.decode(foundToken)
 
-	if (!decodedToken) return res.status(401).json({ message: "Eroare json." })
+	if (!decodedToken) return res.status(401).json({ message: "Eroare." })
 
 	const user = await Membru.findById(decodedToken?.userId)
 
