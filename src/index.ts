@@ -64,8 +64,8 @@ let exitHandler = () => {
 	}
 }
 
-process.on('uncaughtException', () => exitHandler())
 process.on('unhandledRejection', () => exitHandler())
+process.on('uncaughtException', () => exitHandler())
 
 process.on('SIGTERM', () => {
 	if (server) server.close()
