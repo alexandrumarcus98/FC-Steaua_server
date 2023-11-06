@@ -6,7 +6,6 @@ const detaliiMembru: any = asyncHandler(async (req, res): Promise<any> => {
 	const cookies = req.header('Cookie').split(";")
 	let foundToken = ''
 	cookies.forEach(k => {
-		console.log(k)
 		if (k.startsWith(' jwt') || k.startsWith('jwt')) {
 			foundToken = k.split('=')[1]
 		}

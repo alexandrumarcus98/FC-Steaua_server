@@ -20,7 +20,6 @@ const membruSchema = new mongoose.Schema<UserDoc>({
 	}],
 	parola: {
 		type: String,
-		required: true,
 	},
 	comenzi: Array<{
 		nrComanda: string
@@ -30,7 +29,9 @@ const membruSchema = new mongoose.Schema<UserDoc>({
 	date: {
 		juridic: {
 			nume: String,
-			cui: String
+			cif: String,
+			email: String,
+			nrTel: String
 		},
 		fizic: {
 			sex: String,

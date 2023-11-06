@@ -12,6 +12,8 @@ export interface UserDoc extends Document {
 		juridic: {
 			nume: string
 			cui: string
+			nrTel: string
+			email: string
 		}
 		fizic: {
 			sex: string

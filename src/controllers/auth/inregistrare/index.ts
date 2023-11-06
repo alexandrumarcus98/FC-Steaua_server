@@ -41,22 +41,21 @@ const inregistrareMembru: any = asyncHandler(async (req, res): Promise<any> => {
 			})
 		}
 	} else {
-		let { email, parola, cui, companie, tip } = req.body
-		const salt = await bcrypt.genSalt(10);
-		const hashedPassword = await bcrypt.hash(parola, salt);
-		const userExists = await Membru.findOne({ email })
+		let { emailCompanie, cifCompanie, numeCompanie, tip, nrTelCompanie } = req.body
+		const userExists = await Membru.findOne({ emailCompanie })
 		if (userExists) {
 			return res.status(404).json({ message: 'Utilizatorul exista deja...' })
 		}
 
 		const user = await Membru.create({
-			email: email,
+			email: emailCompanie,
 			tip: tip,
-			parola: hashedPassword,
 			date: {
 				juridic: {
-					cui: cui,
-					nume: companie,
+					cui: cifCompanie,
+					nume: numeCompanie,
+					email: emailCompanie,
+					nrTel: nrTelCompanie
 				}
 			}
 		})
