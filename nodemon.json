@@ -6,5 +6,5 @@
 	"ignore": [
 		"src/**/*.spec.ts"
 	],
-	"exec": "nodemon --watch './**/*.ts' --exec 'NODE_ENV=dev node --no-warnings --experimental-specifier-resolution=node --loader ts-paths-esm-loader' -r dotenv/config src/index.ts"
+	"exec": "nodemon --watch './**/*.ts' --exec 'NODE_ENV=dev PORT=3000 node --no-warnings --experimental-specifier-resolution=node --loader ts-paths-esm-loader' -r dotenv/config src/index.ts"
 }
