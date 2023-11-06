@@ -2,14 +2,14 @@
 	"name": "fc-steaua_server",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.ts",
+	"main": "src/index.ts",
 	"type": "module",
 	"scripts": {
-		"start-prod": "NODE_ENV=prod node --no-warnings --loader ts-paths-esm-loader -r dotenv/config index.ts",
-		"watch-dev": "nodemon --watch './**/*.ts' --exec 'NODE_ENV=dev node --no-warnings --experimental-specifier-resolution=node --loader ts-paths-esm-loader' -r dotenv/config index.ts",
+		"start-prod": "NODE_ENV=prod node --no-warnings --loader ts-paths-esm-loader -r dotenv/config src/index.ts",
+		"watch-dev": "nodemon --watch './**/*.ts' --exec 'NODE_ENV=dev node --no-warnings --experimental-specifier-resolution=node --loader ts-paths-esm-loader' -r dotenv/config src/index.ts",
 		"server-dev": "tsc-watch --onSuccess && npm run watch-dev",
 		"server-prod": "tsc-watch --onSuccess && npm run start-prod",
-		"start": "nodemon index.ts"
+		"start": "nodemon"
 	},
 	"keywords": [
 		"node",

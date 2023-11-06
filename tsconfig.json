@@ -10,10 +10,10 @@
 			"esnext"
 		],
 		"typeRoots": [
-			"./src/types",
+			"src/typeses",
 			"./node_modules/@types"
 		],
-		"outDir": "dist",
+		"outDir": "./dist",
 		"declaration": true,
 		"allowJs": true,
 		"baseUrl": "",

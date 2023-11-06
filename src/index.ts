@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import ExpressMongoSanitize from 'express-mongo-sanitize';
 import compression from 'compression'
 import cors from 'cors'
-import { connect } from './src/config/db/'
+import { connect } from './config/db'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import ip from 'ip'
