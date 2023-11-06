@@ -24,7 +24,7 @@ if (config.env)
 	});
 
 const app: Application = express();
-const port = config.port || 8000
+const port = config.port || 3000;
 connect()
 const corsOptions = {
 	origin: `${process.env.FE_URL}`,
@@ -52,7 +52,7 @@ app.use((_req, _res, next) => {
 	next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
 });
 
-let server = app.listen(port, () => {
+let server = app.listen(port, "0.0.0.0", () => {
 	log(chalk.bgYellow.black(`Server running at: http://${ipAddress}:${port}`));
 });
 
