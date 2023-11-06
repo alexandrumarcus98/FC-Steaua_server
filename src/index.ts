@@ -38,6 +38,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(compression())
 app.use(ExpressMongoSanitize());
+app.use('/', (req, res) => {
+	res.send('Hello World!')
+})
 app.use('/api', router)
 app.use(express.static(path.join(__dirname, 'public/credentials')))
 app.get('public/credentials', (_, res) => {
