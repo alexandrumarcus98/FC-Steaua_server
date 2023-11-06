@@ -27,8 +27,10 @@
 	"include": [
 		"next-env.d.ts",
 		"twin.d.ts",
-		"src/**/*.ts",
+		"**/*.ts",
 		"src/**/*.tsx",
+		"src/**/*.ts",
+		"src/global.ts",
 	],
 	"exclude": [
 		"node_modules",
