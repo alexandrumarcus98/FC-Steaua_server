@@ -9,7 +9,7 @@
 		"watch-dev": "nodemon --watch './**/*.ts' --exec 'NODE_ENV=dev node --no-warnings --experimental-specifier-resolution=node --loader ts-paths-esm-loader' -r dotenv/config src/index.ts",
 		"server-dev": "tsc-watch --onSuccess && npm run watch-dev",
 		"server-prod": "tsc-watch --onSuccess && npm run start-prod",
-		"start": "nodemon"
+		"start": "node --no-warnings --loader ts-paths-esm-loader -r src/index.ts"
 	},
 	"keywords": [
 		"node",
