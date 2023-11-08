@@ -19,12 +19,6 @@ const inregistrareMembruFizic: any = asyncHandler(async (req, res): Promise<any>
 	if (userExists) {
 		return res.status(400).json({ message: 'Utilizatorul exista deja...' })
 	}
-	// const ipinfoWrapper = new IPinfoWrapper("2dcedce28f0ef8");
-	// let location = null;
-
-	// ipinfoWrapper.lookupIp(res.locals.ipInfo || req.ip || req.socket.remoteAddress).then((response: IPinfo) => {
-	// 	location = response
-	// });
 
 	const user = await MembruFizic.create({
 		email: email,
