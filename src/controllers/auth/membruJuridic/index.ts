@@ -1,8 +1,8 @@
 import asyncHandler from 'express-async-handler'
 import jwt from 'jsonwebtoken'
-import Membru from 'src/models/membru';
+import MembruJuridic from 'src/models/membruJuridic'
 
-const detaliiMembru: any = asyncHandler(async (req, res): Promise<any> => {
+const detaliiMembruJuridic: any = asyncHandler(async (req, res): Promise<any> => {
 	const cookies = req.header('Cookie').split(";")
 	let foundToken = ''
 	cookies.forEach(k => {
@@ -14,16 +14,15 @@ const detaliiMembru: any = asyncHandler(async (req, res): Promise<any> => {
 
 	if (!decodedToken) return res.status(401).json({ message: "Eroare." })
 
-	const user = await Membru.findById(decodedToken?.userId)
+	const user = await MembruJuridic.findById(decodedToken?.userId)
 
 	if (user) {
 		return res.status(201).json({
-			...user?.date,
 			comenzi: user?.comenzi,
-			tip: user?.tip,
-			email: user?.email
+			tipAbonament: user?.tipAbonament,
+			email: user?.emailCompanie
 		})
 	} else return res.status(401).json({ message: 'Utilizatorul nu a fost gasit...' })
 })
 
-export { detaliiMembru }
+export { detaliiMembruJuridic }

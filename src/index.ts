@@ -9,11 +9,10 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import ip from 'ip'
 import chalk from 'chalk'
-import httpStatus from 'http-status';
 import { config } from 'src/config';
 import router from 'src/routes';
 import { errorConverter, errorHandler } from 'src/modules/errors/handleError';
-import ApiError from 'src/modules/errors/apiError';
+import geoip from 'geoip-lite'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const ipAddress = ip.address();
@@ -32,7 +31,27 @@ const corsOptions = {
 	optionSuccessStatus: 200,
 }
 
-app.use(helmet())
+app.use((req, res, next) => {
+	res.locals.ua = req.get('User-Agent');
+	if (req.headers['x-forwarded-for'] === undefined)
+		res.locals.ipInfo = geoip.lookup(req?.ip || req?.socket?.remoteAddress || '');
+	else res.locals.ipInfo = geoip.lookup(req?.headers['x-forwarded-for'][0])
+	next()
+})
+app.set("trust proxy", 1);
+app.use(function (req, res: any, next) {
+	app.use(
+		helmet({
+			contentSecurityPolicy: false,
+		})
+	);
+	if (req.secure) {
+		res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+	}
+	res.setHeader('Access-Control-Allow-Headers', 'x-requested-with');
+	res.setHeader('Access-Control-Request-Headers', '*');
+	next();
+})
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
