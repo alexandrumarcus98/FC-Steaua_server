@@ -2,7 +2,7 @@ import asyncHandler from 'express-async-handler'
 import bcrypt from 'bcrypt'
 import geoip from 'geoip-lite'
 import MembruFizic from 'src/models/membruFizic'
-import IPinfoWrapper, { IPinfo } from "node-ipinfo";
+import { IPinfoWrapper, IPinfo } from "node-ipinfo";
 
 const inregistrareMembruFizic: any = asyncHandler(async (req, res): Promise<any> => {
 	if (req.method !== "POST") return res.status(404).json({ message: "Ceva nu a mers bine..." })
@@ -19,12 +19,12 @@ const inregistrareMembruFizic: any = asyncHandler(async (req, res): Promise<any>
 	if (userExists) {
 		return res.status(400).json({ message: 'Utilizatorul exista deja...' })
 	}
-	const ipinfoWrapper = new IPinfoWrapper("2dcedce28f0ef8");
-	let location = null;
+	// const ipinfoWrapper = new IPinfoWrapper("2dcedce28f0ef8");
+	// let location = null;
 
-	ipinfoWrapper.lookupIp(res.locals.ipInfo || req.ip || req.socket.remoteAddress).then((response: IPinfo) => {
-		location = response
-	});
+	// ipinfoWrapper.lookupIp(res.locals.ipInfo || req.ip || req.socket.remoteAddress).then((response: IPinfo) => {
+	// 	location = response
+	// });
 
 	const user = await MembruFizic.create({
 		email: email,
@@ -36,7 +36,7 @@ const inregistrareMembruFizic: any = asyncHandler(async (req, res): Promise<any>
 			ip: req.ip,
 			socketIp: req.socket.remoteAddress,
 			ua: res.locals.ua,
-			location: location
+			location: ''
 		},
 		sex: sex,
 		nrTel: nrTel,
