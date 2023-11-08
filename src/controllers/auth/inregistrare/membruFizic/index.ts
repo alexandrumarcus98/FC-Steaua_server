@@ -29,38 +29,36 @@ const inregistrareMembruFizic: any = asyncHandler(async (req, res): Promise<any>
 	const ipinfoWrapper = new IPinfoWrapper("2dcedce28f0ef8", cache);
 
 	ipinfoWrapper.lookupIp(req?.ip || req?.socket?.remoteAddress).then(async (response: IPinfo) => {
-		if (response) {
-			const user = await MembruFizic.create({
-				email: email,
-				parola: hashedPassword,
-				tipAbonament: tipAbonament,
-				data: {
-					ipInfo: res.locals.ipInfo || req.ip || req.socket.remoteAddress,
-					socketInfo: geoip.lookup(res.locals.ipInfo || req.ip || req.socket.remoteAddress),
-					ip: req.ip,
-					socketIp: req.socket.remoteAddress,
-					ua: res.locals.ua,
-					location: response
-				},
-				sex: sex,
-				nrTel: nrTel,
-				dataNasterii: dataNasterii,
-				oras: oras,
-				tara: tara,
-				nume: nume,
-				prenume: prenume,
-				regiune: regiune,
-				membrii: membrii,
-				adresa: adresa,
-			})
+		const user = await MembruFizic.create({
+			email: email,
+			parola: hashedPassword,
+			tipAbonament: tipAbonament,
+			data: {
+				ipInfo: res.locals.ipInfo || req.ip || req.socket.remoteAddress,
+				socketInfo: geoip.lookup(res.locals.ipInfo || req.ip || req.socket.remoteAddress),
+				ip: req.ip,
+				socketIp: req.socket.remoteAddress,
+				ua: res.locals.ua,
+				location: response || null
+			},
+			sex: sex,
+			nrTel: nrTel,
+			dataNasterii: dataNasterii,
+			oras: oras,
+			tara: tara,
+			nume: nume,
+			prenume: prenume,
+			regiune: regiune,
+			membrii: membrii,
+			adresa: adresa,
+		})
 
-			if (user?._id) {
-				return res.status(201).json({
-					userId: user?._id,
-					message: "Cont creat cu success.",
-				})
-			}
-		} else return res.status(404).json({ message: "Ceva nu a mers bine..." })
+		if (user?._id) {
+			return res.status(201).json({
+				userId: user?._id,
+				message: "Cont creat cu success.",
+			})
+		}
 	});
 	return res.status(404).json({ message: "Ceva nu a mers bine..." })
 })
