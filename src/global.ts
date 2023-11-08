@@ -20,11 +20,10 @@ export interface IMembruFizic extends Document {
 	adresa: string
 	data: {
 		ipInfo: string,
-		socketInfo: string,
+		socketInfo: Object | String,
 		ip: string,
 		socketIp: string,
-		ua: Object
-		location: IPinfo
+		ua: Object | String
 	},
 }
 
@@ -46,10 +45,10 @@ export interface IMembruJuridic extends Document {
 	}>
 	data: {
 		ipInfo: string,
-		socketInfo: string,
+		socketInfo: Object | String,
 		ip: string,
 		socketIp: string,
-		ua: Object
+		ua: Object | String
 	},
 	adresaCompanie: string
 	numeCompanie: string
