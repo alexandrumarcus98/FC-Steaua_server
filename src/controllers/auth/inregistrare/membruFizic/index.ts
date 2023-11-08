@@ -60,7 +60,6 @@ const inregistrareMembruFizic: any = asyncHandler(async (req, res): Promise<any>
 			})
 		}
 	});
-	return res.status(404).json({ message: "Ceva nu a mers bine..." })
 })
 
 export { inregistrareMembruFizic }
