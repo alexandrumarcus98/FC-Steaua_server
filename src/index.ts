@@ -24,7 +24,7 @@ if (config.env)
 	});
 
 const app: Application = express();
-const port = config.port || 3000;
+const port = config.port || 8000;
 connect()
 const corsOptions = {
 	origin: `${process.env.FE_URL}`,
@@ -39,31 +39,32 @@ app.use(express.urlencoded({ extended: true }))
 app.use(compression())
 app.use(ExpressMongoSanitize());
 app.use('/api', router)
+app.use('', (req, res) => {
+	res.send('API is running...')
+})
 app.use(express.static(path.join(__dirname, 'public/credentials')))
 app.get('public/credentials', (_, res) => {
 	res.sendFile(path.join(__dirname, 'public/credentials/X509-cert-4908773705758944131.pem'))
 })
 app.use(errorConverter)
 app.use(errorHandler)
-app.use((_req, _res, next) => {
-	next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
-});
 
-app.listen(port, "0.0.0.0", () => {
+
+let server = app.listen(port, "0.0.0.0", () => {
 	log(chalk.bgYellow.black(`Server running at: http://${ipAddress}:${port}`));
 });
 
-// let exitHandler = () => {
-// 	if (server) {
-// 		server.close(() => process.exit(1))
-// 	} else {
-// 		process.exit(1)
-// 	}
-// }
+let exitHandler = () => {
+	if (server) {
+		server.close(() => process.exit(1))
+	} else {
+		process.exit(1)
+	}
+}
 
-// process.on('unhandledRejection', () => exitHandler())
-// process.on('uncaughtException', () => exitHandler())
+process.on('unhandledRejection', () => exitHandler())
+process.on('uncaughtException', () => exitHandler())
 
-// process.on('SIGTERM', () => {
-// 	if (server) server.close()
-// })
+process.on('SIGTERM', () => {
+	if (server) server.close()
+})

@@ -4,7 +4,7 @@ let joi = Joi
 const envVarSchema = joi.object()
 	.keys({
 		NODE_ENV: joi.string().valid('production', 'development').required(),
-		PORT: joi.number().default(3000),
+		PORT: joi.number().default(8000),
 		CLUSTER_USERNAME: joi.string().required().description('Cluster Key'),
 		CLUSTER_PASSWORD: joi.string().required().description('Cluster Key'),
 		CREDENTIAL_URI_PATH: joi.string().required().description('Uri path'),
