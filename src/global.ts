@@ -18,13 +18,7 @@ export interface IMembruFizic extends Document {
 	regiune: string
 	tara: string
 	adresa: string
-	data: {
-		ipInfo: string,
-		socketInfo: Object | String,
-		ip: string,
-		socketIp: string,
-		ua: Object | String
-	},
+	data: any
 }
 
 export interface IMembruAsociat extends Document {
@@ -43,13 +37,7 @@ export interface IMembruJuridic extends Document {
 	comenzi: Array<{
 		nrComanda: string
 	}>
-	data: {
-		ipInfo: string,
-		socketInfo: Object | String,
-		ip: string,
-		socketIp: string,
-		ua: Object | String
-	},
+	data: any
 	adresaCompanie: string
 	numeCompanie: string
 	tipAbonament: string

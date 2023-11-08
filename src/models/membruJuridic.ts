@@ -13,25 +13,7 @@ const membruJuridicSchema = new mongoose.Schema<IMembruJuridic>({
 			required: true,
 		},
 	}],
-	data: {
-		ipInfo: {
-			type: String,
-			default: ''
-		},
-		socketInfo: {
-			type: String,
-			default: ''
-		},
-		ip: {
-			type: String,
-			default: ''
-		},
-		socketIp: {
-			type: String,
-			default: ''
-		},
-		ua: Object
-	},
+	data: Object,
 	tipAbonament: String,
 	comenzi: Array<{
 		nrComanda: string

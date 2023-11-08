@@ -13,14 +13,7 @@ const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
 			required: true,
 		},
 	}],
-	data: {
-		ipInfo: String,
-		socketInfo: String,
-		ip: String,
-		socketIp: String,
-		ua: Object,
-		location: Object
-	},
+	data: Object,
 	parola: {
 		type: String,
 	},
