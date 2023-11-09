@@ -57,10 +57,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(compression())
 app.use(ExpressMongoSanitize());
-app.use('/api', router)
-app.use('', (req, res) => {
-	res.send('API is running...')
-})
+app.use('/api/v1', router)
 app.use(express.static(path.join(__dirname, 'public/credentials')))
 app.get('public/credentials', (_, res) => {
 	res.sendFile(path.join(__dirname, 'public/credentials/X509-cert-4908773705758944131.pem'))

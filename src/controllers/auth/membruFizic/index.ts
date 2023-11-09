@@ -42,4 +42,22 @@ const locatieUseri: any = asyncHandler(async (req, res): Promise<any> => {
 	return res.status(201)
 })
 
-export { detaliiMembruFizic, locatieUseri }
+const verificareUser: any = asyncHandler(async (req, res): Promise<any> => {
+	let utilizator = await MembruFizic.findOne({
+		email: req.body.email
+	})
+
+	if (utilizator?._id)
+		return res.status(403).json({ message: 'Utilizatorul exista deja.' })
+
+	utilizator = await MembruFizic.findOne({
+		nrTel: req?.body?.nrTel?.split(' ')?.join("")
+	})
+
+	if (utilizator?._id)
+		return res.status(403).json({ message: 'Utilizatorul exista deja.' })
+
+	return res.status(201).json({ validUser: true })
+})
+
+export { detaliiMembruFizic, locatieUseri, verificareUser }
