@@ -27,5 +27,4 @@ const membruJuridicSchema = new mongoose.Schema<IMembruJuridic>({
 })
 
 const MembruJuridic = mongoose.model('membruJuridic', membruJuridicSchema)
-
 export default MembruJuridic
