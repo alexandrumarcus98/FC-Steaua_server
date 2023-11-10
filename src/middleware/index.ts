@@ -1,6 +1,6 @@
 import { Request } from 'express'
 import asyncHandler from 'express-async-handler'
-import Membru from 'src/models/membru'
+import MembruFizic from 'src/models/membruFizic'
 
 const protect: any = asyncHandler(async (req: Request | any, res: any, next) => {
 	let userId = ''
@@ -12,7 +12,7 @@ const protect: any = asyncHandler(async (req: Request | any, res: any, next) => 
 			userId = req.headers.authorization.split(' ')[1]
 			if (userId) {
 
-				req.user = await Membru.findOne({
+				req.user = await MembruFizic.findOne({
 					_id: userId
 				})
 

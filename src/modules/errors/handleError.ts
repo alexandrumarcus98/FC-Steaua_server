@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import httpStatus from 'http-status';
 import ApiError from './apiError';
-import { config } from 'src/config';
+import { config } from 'src/config/config';
 
 export const errorConverter = (err: any, _req: Request, _res: Response, next: NextFunction) => {
 	let error = err;

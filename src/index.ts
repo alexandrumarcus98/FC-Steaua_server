@@ -4,15 +4,15 @@ import helmet from 'helmet';
 import ExpressMongoSanitize from 'express-mongo-sanitize';
 import compression from 'compression'
 import cors from 'cors'
-import { connect } from './config/db'
+import { connect } from './config/db/index'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import ip from 'ip'
 import chalk from 'chalk'
-import { config } from 'src/config';
 import router from 'src/routes';
 import { errorConverter, errorHandler } from 'src/modules/errors/handleError';
 import geoip from 'geoip-lite'
+import { config } from './config/config';
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const ipAddress = ip.address();

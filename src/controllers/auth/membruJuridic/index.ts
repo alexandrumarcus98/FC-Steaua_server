@@ -25,4 +25,22 @@ const detaliiMembruJuridic: any = asyncHandler(async (req, res): Promise<any> =>
 	} else return res.status(401).json({ message: 'Utilizatorul nu a fost gasit...' })
 })
 
-export { detaliiMembruJuridic }
+const verificareJuridic: any = asyncHandler(async (req, res): Promise<any> => {
+	let utilizator = await MembruJuridic.findOne({
+		emailCompanie: req.body.emailCompanie
+	})
+
+	if (utilizator?._id)
+		return res.status(403).json({ message: 'Utilizatorul exista deja.' })
+
+	utilizator = await MembruJuridic.findOne({
+		nrTel: req?.body?.nrTelCompanie?.split(' ')?.join("")
+	})
+
+	if (utilizator?._id)
+		return res.status(403).json({ message: 'Utilizatorul exista deja.' })
+
+	return res.status(201).json({ validUser: true })
+})
+
+export { detaliiMembruJuridic, verificareJuridic }

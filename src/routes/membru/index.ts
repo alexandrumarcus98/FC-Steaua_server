@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import { detaliiMembruFizic, locatieUseri, verificareUser } from 'src/controllers/auth/membruFizic';
-import { detaliiMembruJuridic } from 'src/controllers/auth/membruJuridic';
+import { detaliiMembruJuridic, verificareJuridic } from 'src/controllers/auth/membruJuridic';
 const router: Router = express.Router();
 router
 	.route('/data/fizic')
@@ -17,5 +17,9 @@ router
 router
 	.route('/data/juridic')
 	.post(detaliiMembruJuridic);
+
+router
+	.route('/verificare/juridic')
+	.post(verificareJuridic);
 
 export default router

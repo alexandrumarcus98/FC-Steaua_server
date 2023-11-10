@@ -24,6 +24,11 @@
 		"allowImportingTsExtensions": true,
 		"allowUnreachableCode": true,
 	},
+	"ts-node": {
+		"experimentalSpecifierResolution": "node",
+		"transpileOnly": true,
+		"esm": true,
+	},
 	"include": [
 		"next-env.d.ts",
 		"twin.d.ts",

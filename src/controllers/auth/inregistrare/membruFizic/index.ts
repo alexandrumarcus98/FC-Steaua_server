@@ -4,7 +4,6 @@ import geoip from 'geoip-lite'
 import MembruFizic from 'src/models/membruFizic'
 import { IPinfo, LruCache, Options, IPinfoWrapper } from 'node-ipinfo'
 
-
 const inregistrareMembruFizic: any = asyncHandler(async (req, res): Promise<any> => {
 	if (req.method !== "POST") return res.status(404).json({ message: "Ceva nu a mers bine..." })
 	let { email, nume, prenume, sex, regiune, tara, oras, parola, nrTel, dataNasterii, tipAbonament, membrii, adresa } = req.body
