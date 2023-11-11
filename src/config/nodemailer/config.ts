@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer'
 import QRCode from 'qrcode'
+import { config } from '../config'
 
 export const sendOTPTemplate = (number: string) => {
 	return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -122,7 +123,7 @@ export const sendVerificationCode = async (email: string, token: string) => {
 
 export const sendQRCodeAccountConfirmation = async (email: string, prenume: string, serieUtilizator: string, nrComanda: string) => {
 	try {
-		let img = await QRCode.toDataURL(`http://localhost:3000/verificareMembru/${serieUtilizator}`);
+		let img = await QRCode.toDataURL(`${config.fe_url}/${serieUtilizator}`);
 		let emailTransporter = await createTransporter();
 		await emailTransporter.sendMail({
 			from: 'Ultima Redută 1947',

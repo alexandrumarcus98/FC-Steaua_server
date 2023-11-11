@@ -13,7 +13,8 @@ const envVarSchema = joi.object()
 		APP_CLIENT_ID: joi.string().required().description('Google client id'),
 		APP_CLIENT_SECRET: joi.string().required().description('Google app client secret'),
 		APP_REFRESH_TOKEN: joi.string().required().description('Google app client refresh token'),
-		APP_USER_EMAIL: joi.string().required().description('Google app client refresh token')
+		APP_USER_EMAIL: joi.string().required().description('Google app client refresh token'),
+		FE_URL: joi.string().required().description('Google app client refresh token')
 	})
 
 const { value: envVars } = envVarSchema
@@ -28,6 +29,7 @@ const { value: envVars } = envVarSchema
 export const config = {
 	env: envVars.NODE_ENV,
 	port: envVars.PORT,
+	fe_url: envVars.FE_URL,
 	APP_CLIENT_ID: envVars.APP_CLIENT_ID,
 	APP_CLIENT_SECRET: envVars.APP_CLIENT_SECRET,
 	APP_REFRESH_TOKEN: envVars.APP_REFRESH_TOKEN,
