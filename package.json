@@ -39,6 +39,7 @@
 		"@types/bcrypt": "^5.0.1",
 		"@types/geoip-lite": "^1.4.4",
 		"@types/ip": "^1.1.2",
+		"@types/uuid": "^9.0.7",
 		"bcrypt": "^5.1.1",
 		"chalk": "^5.3.0",
 		"compression": "^1.7.4",
@@ -65,6 +66,7 @@
 		"ts-node": "^10.9.1",
 		"ts-paths-esm-loader": "^1.4.3",
 		"tsc-watch": "^6.0.4",
+		"uuid": "^9.0.1",
 		"whatsapp-web.js": "^1.23.0",
 		"wwebjs-mongo": "^1.1.0",
 		"xss": "^1.0.14"

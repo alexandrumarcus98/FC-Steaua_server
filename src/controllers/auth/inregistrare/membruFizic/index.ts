@@ -3,10 +3,12 @@ import bcrypt from 'bcrypt'
 import geoip from 'geoip-lite'
 import MembruFizic from 'src/models/membruFizic'
 import { IPinfo, LruCache, Options, IPinfoWrapper } from 'node-ipinfo'
+import MembruAsociat from 'src/models/membruAsociat'
+import { IMembruAsociat } from 'src/global'
 
 const inregistrareMembruFizic: any = asyncHandler(async (req, res): Promise<any> => {
 	if (req.method !== "POST") return res.status(404).json({ message: "Ceva nu a mers bine..." })
-	let { email, nume, prenume, sex, regiune, tara, oras, parola, nrTel, dataNasterii, tipAbonament, membrii, adresa } = req.body
+	let { email, nume, prenume, sex, regiune, tara, oras, parola, nrTel, dataNasterii, tipAbonament, membrii, adresa, comenzi } = req.body
 
 	if (!email) {
 		return res.status(401).json({ message: 'Ne pare rau, emailul furnizat nu este corect.' })
@@ -27,38 +29,80 @@ const inregistrareMembruFizic: any = asyncHandler(async (req, res): Promise<any>
 	const cache = new LruCache(cacheOptions);
 	const ipinfoWrapper = new IPinfoWrapper("2dcedce28f0ef8", cache);
 
-	ipinfoWrapper.lookupIp(req?.ip || req?.socket?.remoteAddress).then(async (response: IPinfo) => {
-		const user = await MembruFizic.create({
-			email: email,
-			parola: hashedPassword,
-			tipAbonament: tipAbonament,
-			data: {
-				ipInfo: res.locals.ipInfo || req.ip || req.socket.remoteAddress,
-				socketInfo: geoip.lookup(res.locals.ipInfo || req.ip || req.socket.remoteAddress),
-				ip: req.ip,
-				socketIp: req.socket.remoteAddress,
-				ua: res.locals.ua,
-				location: response || null
-			},
-			sex: sex,
-			nrTel: nrTel,
-			dataNasterii: dataNasterii,
-			oras: oras,
-			tara: tara,
-			nume: nume,
-			prenume: prenume,
-			regiune: regiune,
-			membrii: membrii,
-			adresa: adresa,
-		})
-
-		if (user?._id) {
-			return res.status(201).json({
-				userId: user?._id,
-				message: "Cont creat cu success.",
+	try {
+		const membriiFizici = await MembruFizic.find({});
+		const membriiAsociati = await MembruAsociat.find({})
+		const lMembriiFizici = membriiFizici?.length
+		const lMemmbriiAsociati = membriiAsociati.length
+		let nrMembru = (lMembriiFizici + lMemmbriiAsociati + 1).toString().padStart(7, '0')
+		ipinfoWrapper.lookupIp(req?.ip || req?.socket?.remoteAddress).then(async (response: IPinfo) => {
+			const user = await MembruFizic.create({
+				email: email,
+				parola: hashedPassword,
+				comenzi: comenzi,
+				tipAbonament: tipAbonament,
+				nrMembru: nrMembru,
+				data: {
+					ipInfo: res.locals.ipInfo || req.ip || req.socket.remoteAddress,
+					socketInfo: geoip.lookup(res.locals.ipInfo || req.ip || req.socket.remoteAddress),
+					ip: req.ip,
+					socketIp: req.socket.remoteAddress,
+					ua: res.locals.ua,
+					location: response || null
+				},
+				sex: sex,
+				nrTel: nrTel,
+				dataNasterii: dataNasterii,
+				oras: oras,
+				tara: tara,
+				nume: nume,
+				prenume: prenume,
+				regiune: regiune,
+				membrii: membrii,
+				adresa: adresa,
 			})
-		}
-	});
+
+			if (user?._id) {
+				if (membrii?.length) {
+					let newMembrii = membrii?.map((membru: IMembruAsociat, i: number) => {
+						return { ...membru, nrMembru: (lMembriiFizici + lMemmbriiAsociati + 2 + i).toString().padStart(7, '0'), tipAbonament: tipAbonament }
+					})
+
+					await MembruAsociat.insertMany(newMembrii)
+						.then(() => {
+							return res.status(201).json({
+								nume: user?.nume,
+								prenume: user?.prenume,
+								email: user?.email,
+								tipAbonament: user?.tipAbonament,
+								userId: user?._id,
+								nrMembru: user?.nrMembru,
+								membrii: user?.membrii,
+								comenzi: user?.comenzi,
+								serieUtilizator: user?.serieUtilizator,
+								message: "Cont creat cu success.",
+							})
+						})
+						.catch((err) => res.status(401).json({ message: err }))
+				} else {
+					return res.status(201).json({
+						nume: user?.nume,
+						prenume: user?.prenume,
+						email: user?.email,
+						tipAbonament: user?.tipAbonament,
+						userId: user?._id,
+						nrMembru: user?.nrMembru,
+						membrii: user?.membrii,
+						comenzi: user?.comenzi,
+						serieUtilizator: user?.serieUtilizator,
+						message: "Cont creat cu success.",
+					})
+				}
+			}
+		});
+	} catch (err) {
+		if (err) return res.status(201).json({ message: err })
+	}
 })
 
 export { inregistrareMembruFizic }

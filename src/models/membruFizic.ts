@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcrypt'
+import { v4 as uuidv4 } from 'uuid';
 import { IMembruAsociat, IMembruFizic } from "src/global";
 const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
 	email: {
@@ -20,6 +21,15 @@ const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
 	comenzi: Array<{
 		nrComanda: string
 	}>,
+	serieUtilizator: {
+		type: String,
+		default: uuidv4
+	},
+	nrMembru: {
+		type: String,
+		default: "00001",
+		unique: true,
+	},
 	adresa: String,
 	sex: String,
 	nume: String,

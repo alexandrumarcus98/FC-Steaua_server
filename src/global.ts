@@ -1,5 +1,3 @@
-import { IPinfo } from "node-ipinfo"
-
 export interface IMembruFizic extends Document {
 	email: string
 	parola: string
@@ -8,7 +6,7 @@ export interface IMembruFizic extends Document {
 	comenzi: Array<{
 		nrComanda: string
 	}>
-	sex: string
+	sex: any
 	nume: string
 	prenume: string
 	dataNasterii: string
@@ -19,6 +17,8 @@ export interface IMembruFizic extends Document {
 	tara: string
 	adresa: string
 	data: any
+	serieUtilizator: string
+	nrMembru: string
 }
 
 export interface IMembruAsociat extends Document {
@@ -26,9 +26,11 @@ export interface IMembruAsociat extends Document {
 	prenumeAsociat: string
 	emailAsociat: string
 	nrTelAsociat: string
-	sexAsociat: string
+	sexAsociat: any
 	adresaAsociat: string
 	tipAbonament: string
+	serieUtilizator: string
+	nrMembru: string
 }
 
 export interface IMembruJuridic extends Document {
@@ -44,4 +46,6 @@ export interface IMembruJuridic extends Document {
 	nrTelCompanie: string
 	cuiCompanie?: string
 	cifCompanie?: string
+	serieUtilizator: string,
+	nrMembru: string
 }

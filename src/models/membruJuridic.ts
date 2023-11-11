@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { IMembruJuridic } from "src/global";
+import { v4 as uuidv4 } from 'uuid';
 
 const membruJuridicSchema = new mongoose.Schema<IMembruJuridic>({
 	emailCompanie: {
@@ -17,10 +18,17 @@ const membruJuridicSchema = new mongoose.Schema<IMembruJuridic>({
 	tipAbonament: String,
 	comenzi: Array<{
 		nrComanda: string
-		produs: string,
-		pret: string
 	}>,
+	nrMembru: {
+		type: String,
+		default: "00001",
+		unique: true,
+	},
 	numeCompanie: String,
+	serieUtilizator: {
+		type: String,
+		default: uuidv4
+	},
 	cifCompanie: String,
 	nrTelCompanie: String,
 	adresaCompanie: String,
