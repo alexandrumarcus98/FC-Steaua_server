@@ -123,7 +123,7 @@ export const sendVerificationCode = async (email: string, token: string) => {
 
 export const sendQRCodeAccountConfirmation = async (email: string, prenume: string, serieUtilizator: string, nrComanda: string) => {
 	try {
-		let img = await QRCode.toDataURL(`https://ultima-reduta.vercel.app/${serieUtilizator}`);
+		let img = await QRCode.toDataURL(`https://ultima-reduta.vercel.app/verificareMembru/${serieUtilizator}`);
 		let emailTransporter = await createTransporter();
 		await emailTransporter.sendMail({
 			from: 'Ultima Redută 1947',
