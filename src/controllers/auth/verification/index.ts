@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler'
 import jwt from 'jsonwebtoken'
 import { config } from 'src/config/config'
 import { sendVerificationCode } from 'src/config/nodemailer/config'
+import MembruFizic from 'src/models/membruFizic'
 import TokenEmailOTP from 'src/models/tokenEmail'
 
 const sendEmailOTPFizic: any = asyncHandler(async (req, res): Promise<any> => {
@@ -139,5 +140,23 @@ const verifyOTPEmailJuridic: any = asyncHandler(async (req, res): Promise<any> =
 	}
 })
 
-export { sendEmailOTPFizic, sendEmailOTPJuridic, verifyOTPEmailFizic, verifyOTPEmailJuridic }
+const verifySerieUtilizator: any = asyncHandler(async (req, res): Promise<any> => {
+	const { serie } = req.params
+
+	if (!(serie)) {
+		return res.status(401).json({ msg: "Serie necesara." })
+	}
+
+	let findUserBySerie = await MembruFizic.findOne({
+		serieUtilizator: serie
+	})
+
+	if (findUserBySerie) {
+		return res.status(201).json({ message: "Valid", isValid: true, user: findUserBySerie })
+	} else {
+		return res.status(403).json({ message: "Cod invalid", isValid: false })
+	}
+})
+
+export { sendEmailOTPFizic, sendEmailOTPJuridic, verifyOTPEmailFizic, verifyOTPEmailJuridic, verifySerieUtilizator }
 

@@ -44,8 +44,7 @@ export const sendOTPTemplate = (number: string) => {
 }
 
 
-export const sendQRCodeAndConfirmTemplate = async (code: string, prenume: string, nrComanda: string) => {
-	let img = await QRCode.toDataURL(code);
+export const sendQRCodeAndConfirmTemplate = (code: string, prenume: string, nrComanda: string) => {
 	return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -71,7 +70,7 @@ export const sendQRCodeAndConfirmTemplate = async (code: string, prenume: string
 										<div style="color: rgb(0, 0, 0); text-align: left;">
 											<h1 style="margin: 1rem 0">Salut, ${prenume},</h1>
 											<p style="padding-bottom: 16px">Contul tău a fost creat cu success. Foloseste QR-ul de mai jos pentru a te bucura de beneficiile noastre, privind comanda cu nr-ul ${nrComanda}.</p>
-											<img style="padding-bottom: 16px" src="${img}">
+											<img src="${code}">
 											<p style="padding-bottom: 16px">Multumim, <br>Ultima Reduta 1947</p>
 										</div>
 									</div>
@@ -86,6 +85,7 @@ export const sendQRCodeAndConfirmTemplate = async (code: string, prenume: string
 </body>
 </html>`
 }
+
 
 
 const createTransporter = async () => {
@@ -115,20 +115,24 @@ export const sendVerificationCode = async (email: string, token: string) => {
 			html: sendOTPTemplate(token),
 		})
 	} catch (err) {
+		console.log(err)
 		return err
 	}
 }
 
 export const sendQRCodeAccountConfirmation = async (email: string, prenume: string, serieUtilizator: string, nrComanda: string) => {
 	try {
+		let img = await QRCode.toDataURL(`http://localhost:3000/verificareMembru/${serieUtilizator}`);
 		let emailTransporter = await createTransporter();
 		await emailTransporter.sendMail({
 			from: 'Ultima Redută 1947',
+			attachDataUrls: true,
 			to: email,
 			subject: `Ultima Redută - comanda ${nrComanda} și confirmare creare cont.`,
-			html: sendQRCodeAndConfirmTemplate(prenume, serieUtilizator, nrComanda),
+			html: sendQRCodeAndConfirmTemplate(img, prenume, nrComanda),
 		})
 	} catch (err) {
+		console.log(err)
 		return err
 	}
 }

@@ -2,7 +2,7 @@ import express, { Router } from 'express';
 import { inregistrareMembruFizic } from 'src/controllers/auth/inregistrare/membruFizic';
 import { inregistrareMembruJuridic } from 'src/controllers/auth/inregistrare/membruJuridic';
 import { logareMembruFizic } from 'src/controllers/auth/logare/membruFizic';
-import { sendEmailOTPFizic, sendEmailOTPJuridic, verifyOTPEmailFizic, verifyOTPEmailJuridic, } from 'src/controllers/auth/verification';
+import { sendEmailOTPFizic, sendEmailOTPJuridic, verifyOTPEmailFizic, verifyOTPEmailJuridic, verifySerieUtilizator, } from 'src/controllers/auth/verification';
 const router: Router = express.Router();
 router
 	.route('/inregistrare/fizic')
@@ -11,6 +11,10 @@ router
 router
 	.route('/inregistrare/juridic')
 	.post(inregistrareMembruJuridic);
+
+router
+	.route('/verificare/fizic/:serie')
+	.post(verifySerieUtilizator);
 
 router
 	.route('/logare/fizic')
