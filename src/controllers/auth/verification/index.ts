@@ -59,15 +59,37 @@ const sendEmailOTPJuridic: any = asyncHandler(async (req, res): Promise<any> => 
 	let tokenNew = jwt.sign({ emailCompanie }, config.jsonwebtoken, {
 		expiresIn: '1min',
 	})
-	let token = await TokenEmailOTP.create({
+	let findToken = await TokenEmailOTP.find({
 		email: emailCompanie,
-		number: number,
-		token: tokenNew
 	})
-	if (token) {
-		sendVerificationCode(emailCompanie, number.toString())
-			.then(() => res.status(201).json({ msg: 'Email a fost trimis.' }))
-			.catch(() => res.status(404).json({ msg: 'error' }))
+
+
+	if (!findToken) {
+		let token = await TokenEmailOTP.create({
+			email: emailCompanie,
+			number: number,
+			token: tokenNew
+		})
+		if (token) {
+			sendVerificationCode(emailCompanie, number.toString())
+				.then(() => res.status(201).json({ msg: 'Email a fost trimis.' }))
+				.catch(() => res.status(404).json({ msg: 'error' }))
+		}
+	} else {
+		await TokenEmailOTP.findOneAndDelete({
+			email: emailCompanie
+		}).then(async () => {
+			let token = await TokenEmailOTP.create({
+				email: emailCompanie,
+				number: number,
+				token: tokenNew
+			})
+			if (token) {
+				sendVerificationCode(emailCompanie, number.toString())
+					.then(() => res.status(201).json({ msg: 'Email a fost trimis.' }))
+					.catch(() => res.status(404).json({ msg: 'error' }))
+			}
+		})
 	}
 })
 

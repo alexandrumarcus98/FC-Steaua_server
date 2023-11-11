@@ -5,6 +5,7 @@ import MembruFizic from 'src/models/membruFizic'
 import { IPinfo, LruCache, Options, IPinfoWrapper } from 'node-ipinfo'
 import MembruAsociat from 'src/models/membruAsociat'
 import { IMembruAsociat } from 'src/global'
+import { sendQRCodeAccountConfirmation } from 'src/config/nodemailer/config'
 
 const inregistrareMembruFizic: any = asyncHandler(async (req, res): Promise<any> => {
 	if (req.method !== "POST") return res.status(404).json({ message: "Ceva nu a mers bine..." })
@@ -70,6 +71,7 @@ const inregistrareMembruFizic: any = asyncHandler(async (req, res): Promise<any>
 
 					await MembruAsociat.insertMany(newMembrii)
 						.then(() => {
+							sendQRCodeAccountConfirmation(user?.email, user?.prenume, user?.serieUtilizator, user?.comenzi[0]?.nrComanda.toString())
 							return res.status(201).json({
 								nume: user?.nume,
 								prenume: user?.prenume,
@@ -85,6 +87,7 @@ const inregistrareMembruFizic: any = asyncHandler(async (req, res): Promise<any>
 						})
 						.catch((err) => res.status(401).json({ message: err }))
 				} else {
+					sendQRCodeAccountConfirmation(user?.email, user?.prenume, user?.serieUtilizator, user?.comenzi[0]?.nrComanda.toString())
 					return res.status(201).json({
 						nume: user?.nume,
 						prenume: user?.prenume,
