@@ -13,7 +13,6 @@ import router from "src/routes";
 import { errorConverter, errorHandler } from "src/modules/errors/handleError";
 import geoip from "geoip-lite";
 import { config } from "./config/config";
-import { createProxyMiddleware } from "http-proxy-middleware";
 import morgan from "morgan";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -100,12 +99,6 @@ app.use((req, res, next) => {
 });
 app.set("trust proxy", 1);
 app.disable("x-powered-by");
-app.use(
-  createProxyMiddleware("/api/v1", {
-    target: `${process.env.FE_URL}/api/v1`,
-    changeOrigin: true,
-  })
-);
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
