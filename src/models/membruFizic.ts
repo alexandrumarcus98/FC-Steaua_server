@@ -27,7 +27,7 @@ const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
 	},
 	nrMembru: {
 		type: String,
-		default: "00001",
+		default: "0000001",
 		unique: true,
 	},
 	adresa: String,

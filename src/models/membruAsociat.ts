@@ -25,7 +25,7 @@ const membruAsociatSchema = new mongoose.Schema<IMembruAsociat>({
 	},
 	nrMembru: {
 		type: String,
-		default: "00001",
+		default: "0000001",
 		unique: true,
 	},
 	tipAbonament: {

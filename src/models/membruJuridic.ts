@@ -21,7 +21,7 @@ const membruJuridicSchema = new mongoose.Schema<IMembruJuridic>({
 	}>,
 	nrMembru: {
 		type: String,
-		default: "00001",
+		default: "0000001",
 		unique: true,
 	},
 	numeCompanie: String,
@@ -29,9 +29,14 @@ const membruJuridicSchema = new mongoose.Schema<IMembruJuridic>({
 		type: String,
 		default: uuidv4
 	},
-	cifCompanie: String,
+	nume: String,
+	prenume: String,
+	cuiCompanie: String,
 	nrTelCompanie: String,
-	adresaCompanie: String,
+	sediuSocial: String,
+	IBAN: String,
+	regComert: String,
+	banca: String
 })
 
 const MembruJuridic = mongoose.model('membruJuridic', membruJuridicSchema)
