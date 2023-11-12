@@ -102,7 +102,7 @@ app.set("trust proxy", 1);
 app.disable("x-powered-by");
 app.use(
   createProxyMiddleware("/api/v1", {
-    target: `${process.env.FE_URL}`,
+    target: `${process.env.FE_URL}/api/v1`,
     changeOrigin: true,
   })
 );
