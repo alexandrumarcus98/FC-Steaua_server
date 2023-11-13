@@ -6,6 +6,7 @@ import {
   sendVerificationCode,
 } from "src/config/nodemailer/config";
 import MembruFizic from "src/models/membruFizic";
+import MembruJuridic from "src/models/membruJuridic";
 import TokenEmailOTP from "src/models/tokenEmail";
 import TokenResetPwFizic from "src/models/tokenResetPwFizic";
 
@@ -163,14 +164,23 @@ const verifySerieUtilizator: any = asyncHandler(
       return res.status(401).json({ message: "Serie necesara." });
     }
 
-    let findUserBySerie = await MembruFizic.findOne({
+    let findMembruFizic = await MembruFizic.findOne({
       serieUtilizator: serie,
     });
 
-    if (findUserBySerie) {
+    if (findMembruFizic)
       return res
         .status(201)
-        .json({ message: "Valid", isValid: true, user: findUserBySerie });
+        .json({ message: "Valid", isValid: true, user: findMembruFizic });
+
+    let findMembruJuridic = await MembruJuridic.findOne({
+      serieUtilizator: serie,
+    });
+
+    if (findMembruJuridic) {
+      return res
+        .status(201)
+        .json({ message: "Valid", isValid: true, user: findMembruJuridic });
     } else {
       return res.status(403).json({ message: "Cod invalid", isValid: false });
     }

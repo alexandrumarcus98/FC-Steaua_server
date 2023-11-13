@@ -18,6 +18,7 @@ const inregistrareMembruJuridic: any = asyncHandler(
       prenume,
       tipAbonamnet,
       IBAN,
+      comenzi,
       banca,
       regComert,
       nrTelCompanie,
@@ -49,11 +50,14 @@ const inregistrareMembruJuridic: any = asyncHandler(
       const lMembriiFizici = membriiFizici?.length;
       const lMemmbriiAsociati = membriiAsociati.length;
       const lMembriiJuridici = membriiJuridici.length;
-      let nrMembru = lMembriiFizici + lMemmbriiAsociati + lMembriiJuridici + 1;
+      let nrMembru = (lMembriiFizici + lMemmbriiAsociati + lMembriiJuridici + 1)
+        .toString()
+        .padStart(7, "0");
       ipinfoWrapper
         .lookupIp(req?.ip || req?.socket?.remoteAddress)
         .then(async (response: IPinfo) => {
           const user = await MembruJuridic.create({
+            comenzi: comenzi,
             cuiCompanie: cuiCompanie,
             nume: nume,
             nrMembru: nrMembru,
@@ -100,7 +104,6 @@ const inregistrareMembruJuridic: any = asyncHandler(
         })
         .catch((err) => res.status(401).json({ message: err }));
     } catch (err) {
-      console.log(err);
       if (err) return res.status(201).json({ message: err });
     }
   }
