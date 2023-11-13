@@ -36,7 +36,8 @@ const membruJuridicSchema = new mongoose.Schema<IMembruJuridic>({
 	sediuSocial: String,
 	IBAN: String,
 	regComert: String,
-	banca: String
+	banca: String,
+	semnatura: String
 })
 
 const MembruJuridic = mongoose.model('membruJuridic', membruJuridicSchema)

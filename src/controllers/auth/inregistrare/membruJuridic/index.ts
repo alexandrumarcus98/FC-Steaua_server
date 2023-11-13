@@ -22,6 +22,7 @@ const inregistrareMembruJuridic: any = asyncHandler(
       banca,
       regComert,
       nrTelCompanie,
+      semnatura,
       sediuSocial,
     } = req.body;
 
@@ -64,6 +65,7 @@ const inregistrareMembruJuridic: any = asyncHandler(
             prenume: prenume,
             numeCompanie: numeCompanie,
             emailCompanie: emailCompanie,
+            semnatura: semnatura,
             sediuSocial: sediuSocial,
             IBAN: IBAN,
             banca: banca,

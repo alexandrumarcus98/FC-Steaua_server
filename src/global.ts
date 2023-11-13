@@ -19,6 +19,7 @@ export interface IMembruFizic extends Document {
   data: any;
   serieUtilizator: string;
   nrMembru: string;
+  semnatura: string;
 }
 
 export interface IMembruAsociat extends Document {
@@ -57,4 +58,5 @@ export interface IMembruJuridic extends Document {
   banca: string;
   IBAN: string;
   codPostal: string;
+  semnatura: string;
 }

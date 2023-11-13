@@ -26,6 +26,7 @@ const inregistrareMembruFizic: any = asyncHandler(
       tipAbonament,
       membrii,
       adresa,
+      semnatura,
       comenzi,
     } = req.body;
 
@@ -83,6 +84,7 @@ const inregistrareMembruFizic: any = asyncHandler(
             nrTel: nrTel,
             dataNasterii: dataNasterii,
             oras: oras,
+            semnatura: semnatura,
             tara: tara,
             nume: nume,
             prenume: prenume,

@@ -40,7 +40,8 @@ const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
 	dataNasterii: String,
 	tipAbonament: String,
 	nrTel: String,
-	membrii: Array<IMembruAsociat>
+	membrii: Array<IMembruAsociat>,
+	semnatura: String
 })
 membruFizicSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
