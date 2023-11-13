@@ -2,11 +2,11 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 import geoip from "geoip-lite";
 import MembruFizic from "src/models/membruFizic";
-import { IPinfo, LruCache, Options, IPinfoWrapper } from "node-ipinfo";
 import MembruAsociat from "src/models/membruAsociat";
 import { IMembruAsociat } from "src/global";
 import { sendQRCodeAccountConfirmation } from "src/config/nodemailer/config";
 import MembruJuridic from "src/models/membruJuridic";
+import NodeGeocoder from "node-geocoder";
 
 const inregistrareMembruFizic: any = asyncHandler(
   async (req, res): Promise<any> => {
@@ -29,6 +29,12 @@ const inregistrareMembruFizic: any = asyncHandler(
       semnatura,
       comenzi,
     } = req.body;
+    const geocoder = NodeGeocoder({
+      provider: "mapbox",
+      formatter: null,
+      apiKey:
+        "pk.eyJ1IjoiYWxleG1hcmN1czIyIiwiYSI6ImNsb3Jkc2N4eTB2bXMyaWxxaG84YXpndnMifQ.PjXdzSABI9li2ojsqFPr8w",
+    });
 
     if (!email) {
       return res
@@ -44,14 +50,10 @@ const inregistrareMembruFizic: any = asyncHandler(
       return res.status(400).json({ message: "Utilizatorul exista deja..." });
     }
 
-    const cacheOptions: Options<string, any> = {
-      max: 5000,
-      ttl: 24 * 1000 * 60 * 60,
-    };
-    const cache = new LruCache(cacheOptions);
-    const ipinfoWrapper = new IPinfoWrapper("2dcedce28f0ef8", cache);
-
     try {
+      const response = await geocoder?.geocode(
+        `${adresa}, ${oras}, ${regiune}, ${tara}`
+      );
       const membriiFizici = await MembruFizic.find({});
       const membriiAsociati = await MembruAsociat.find({});
       const membriiJuridici = await MembruJuridic.find({});
@@ -61,98 +63,120 @@ const inregistrareMembruFizic: any = asyncHandler(
       let nrMembru = (lMembriiFizici + lMemmbriiAsociati + lMembriiJuridici + 1)
         .toString()
         .padStart(7, "0");
-      ipinfoWrapper
-        .lookupIp(req?.ip || req?.socket?.remoteAddress)
-        .then(async (response: IPinfo) => {
-          const user = await MembruFizic.create({
-            email: email,
-            parola: hashedPassword,
-            comenzi: comenzi,
-            tipAbonament: tipAbonament,
-            nrMembru: nrMembru,
-            data: {
-              ipInfo: res.locals.ipInfo || req.ip || req.socket.remoteAddress,
-              socketInfo: geoip.lookup(
-                res.locals.ipInfo || req.ip || req.socket.remoteAddress
-              ),
-              ip: req.ip,
-              socketIp: req.socket.remoteAddress,
-              ua: res.locals.ua,
-              location: response || null,
-            },
-            sex: sex,
-            nrTel: nrTel,
-            dataNasterii: dataNasterii,
-            oras: oras,
-            semnatura: semnatura,
-            tara: tara,
-            nume: nume,
-            prenume: prenume,
-            regiune: regiune,
-            membrii: membrii,
-            adresa: adresa,
+      const user = await MembruFizic.create({
+        email: email,
+        parola: hashedPassword,
+        comenzi: comenzi,
+        tipAbonament: tipAbonament,
+        nrMembru: nrMembru,
+        data: {
+          ipInfo: res.locals.ipInfo || req.ip || req.socket.remoteAddress,
+          socketInfo: geoip.lookup(
+            res.locals.ipInfo || req.ip || req.socket.remoteAddress
+          ),
+          ip: req.ip,
+          socketIp: req.socket.remoteAddress,
+          ua: res.locals.ua,
+          location: response[0] || null,
+        },
+        sex: sex,
+        nrTel: nrTel,
+        dataNasterii: dataNasterii,
+        oras: oras,
+        semnatura: semnatura,
+        tara: tara,
+        nume: nume,
+        prenume: prenume,
+        regiune: regiune,
+        membrii: membrii,
+        adresa: adresa,
+      });
+
+      if (user?._id) {
+        if (membrii?.length) {
+          let newMembrii = await Promise.all(
+            membrii?.map(async (membru: IMembruAsociat, i: number) => {
+              const response = await geocoder?.geocode(
+                `${membru.adresaAsociat}`
+              );
+              if (response[0])
+                return {
+                  ...membru,
+                  nrMembru: (
+                    lMembriiFizici +
+                    lMemmbriiAsociati +
+                    lMembriiJuridici +
+                    2 +
+                    i
+                  )
+                    .toString()
+                    .padStart(7, "0"),
+                  tipAbonament: tipAbonament,
+                  locatie: response[0] || null,
+                };
+              else
+                return {
+                  ...membru,
+                  nrMembru: (
+                    lMembriiFizici +
+                    lMemmbriiAsociati +
+                    lMembriiJuridici +
+                    2 +
+                    i
+                  )
+                    .toString()
+                    .padStart(7, "0"),
+                  tipAbonament: tipAbonament,
+                };
+            })
+          );
+
+          if (newMembrii)
+            await MembruAsociat.insertMany(newMembrii)
+              .then(() => {
+                sendQRCodeAccountConfirmation(
+                  user?.email,
+                  user?.prenume,
+                  user?.serieUtilizator,
+                  user?.comenzi[0]?.nrComanda
+                );
+                return res.status(201).json({
+                  nume: user?.nume,
+                  prenume: user?.prenume,
+                  email: user?.email,
+                  tipAbonament: user?.tipAbonament,
+                  userId: user?._id,
+                  nrMembru: user?.nrMembru,
+                  membrii: user?.membrii,
+                  comenzi: user?.comenzi,
+                  serieUtilizator: user?.serieUtilizator,
+                  message: "Cont creat cu success.",
+                });
+              })
+              .catch((err) => res.status(401).json({ message: err }));
+        } else {
+          sendQRCodeAccountConfirmation(
+            user?.email,
+            user?.prenume,
+            user?.serieUtilizator,
+            user?.comenzi[0]?.nrComanda
+          );
+          return res.status(201).json({
+            nume: user?.nume,
+            prenume: user?.prenume,
+            email: user?.email,
+            tipAbonament: user?.tipAbonament,
+            userId: user?._id,
+            nrMembru: user?.nrMembru,
+            membrii: user?.membrii,
+            comenzi: user?.comenzi,
+            serieUtilizator: user?.serieUtilizator,
+            message: "Cont creat cu success.",
           });
-
-          if (user?._id) {
-            if (membrii?.length) {
-              let newMembrii = membrii?.map(
-                (membru: IMembruAsociat, i: number) => {
-                  return {
-                    ...membru,
-                    nrMembru: (lMembriiFizici + lMemmbriiAsociati + 2 + i)
-                      .toString()
-                      .padStart(7, "0"),
-                    tipAbonament: tipAbonament,
-                  };
-                }
-              );
-
-              await MembruAsociat.insertMany(newMembrii)
-                .then(() => {
-                  sendQRCodeAccountConfirmation(
-                    user?.email,
-                    user?.prenume,
-                    user?.serieUtilizator,
-                    user?.comenzi[0]?.nrComanda
-                  );
-                  return res.status(201).json({
-                    nume: user?.nume,
-                    prenume: user?.prenume,
-                    email: user?.email,
-                    tipAbonament: user?.tipAbonament,
-                    userId: user?._id,
-                    nrMembru: user?.nrMembru,
-                    membrii: user?.membrii,
-                    comenzi: user?.comenzi,
-                    serieUtilizator: user?.serieUtilizator,
-                    message: "Cont creat cu success.",
-                  });
-                })
-                .catch((err) => res.status(401).json({ message: err }));
-            } else {
-              sendQRCodeAccountConfirmation(
-                user?.email,
-                user?.prenume,
-                user?.serieUtilizator,
-                user?.comenzi[0]?.nrComanda
-              );
-              return res.status(201).json({
-                nume: user?.nume,
-                prenume: user?.prenume,
-                email: user?.email,
-                tipAbonament: user?.tipAbonament,
-                userId: user?._id,
-                nrMembru: user?.nrMembru,
-                membrii: user?.membrii,
-                comenzi: user?.comenzi,
-                serieUtilizator: user?.serieUtilizator,
-                message: "Cont creat cu success.",
-              });
-            }
-          } else {
-            return res.status(201).json({ message: "Eroare." });
-          }
-        });
+        }
+      } else {
+        return res.status(201).json({ message: "Eroare." });
+      }
     } catch (err) {
       if (err) return res.status(201).json({ message: err });
     }

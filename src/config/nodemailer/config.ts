@@ -195,7 +195,6 @@ export const sendQRCodeAccountConfirmation = async (
   nrComanda: string
 ) => {
   try {
-    console.log(nrComanda);
     let img = await QRCode.toDataURL(
       `https://ultima-reduta.vercel.app/verificareMembru/${serieUtilizator}`
     );
