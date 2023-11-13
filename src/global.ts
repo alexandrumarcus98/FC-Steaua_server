@@ -1,6 +1,6 @@
 export interface IMembruFizic extends Document {
   email: string;
-  parola: string;
+  password: string;
   tipAbonament: string;
   tokens: [string];
   comenzi: Array<{

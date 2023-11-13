@@ -100,6 +100,7 @@ const inregistrareMembruJuridic: any = asyncHandler(
         })
         .catch((err) => res.status(401).json({ message: err }));
     } catch (err) {
+      console.log(err);
       if (err) return res.status(201).json({ message: err });
     }
   }

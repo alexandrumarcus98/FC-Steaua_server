@@ -15,7 +15,7 @@ const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
 		},
 	}],
 	data: Object,
-	parola: {
+	password: {
 		type: String,
 	},
 	comenzi: Array<{
@@ -42,8 +42,14 @@ const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
 	nrTel: String,
 	membrii: Array<IMembruAsociat>
 })
+membruFizicSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    next()
+  }
 
-const MembruFizic = mongoose.model('Membru Fizic', membruFizicSchema)
+  const salt = await bcrypt.genSalt(10)
+  this.password = await bcrypt.hash(this.password, salt)
+})
 
 membruFizicSchema.methods.verifyPassword = async function (password: string) {
 	const user = this;
@@ -51,4 +57,6 @@ membruFizicSchema.methods.verifyPassword = async function (password: string) {
 	return isMatch;
 };
 
+
+const MembruFizic = mongoose.model('Membru Fizic', membruFizicSchema)
 export default MembruFizic

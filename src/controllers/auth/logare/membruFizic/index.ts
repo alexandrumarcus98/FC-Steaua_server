@@ -9,7 +9,7 @@ const logareMembruFizic: any = asyncHandler(
     const { email, parola, nrTel } = req.body;
     const user = await MembruFizic.findOne({ email });
     if (!user) return res.status(400).send("Niciun cont nu a fost gasit.");
-    const validPassword = await bcrypt.compare(parola, user.parola);
+    const validPassword = await bcrypt.compare(parola, user.password);
     if (!validPassword) return res.status(400).send("Parola este gresita.");
     const token = jwt.sign({ userId: user.id }, config.jsonwebtoken);
 
