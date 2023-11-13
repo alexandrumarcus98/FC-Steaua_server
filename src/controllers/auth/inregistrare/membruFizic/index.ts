@@ -113,7 +113,7 @@ const inregistrareMembruFizic: any = asyncHandler(
                     user?.email,
                     user?.prenume,
                     user?.serieUtilizator,
-                    user?.comenzi[0]?.nrComanda.toString()
+                    user?.comenzi[0]?.nrComanda
                   );
                   return res.status(201).json({
                     nume: user?.nume,
@@ -134,7 +134,7 @@ const inregistrareMembruFizic: any = asyncHandler(
                 user?.email,
                 user?.prenume,
                 user?.serieUtilizator,
-                user?.comenzi[0]?.nrComanda.toString()
+                user?.comenzi[0]?.nrComanda
               );
               return res.status(201).json({
                 nume: user?.nume,
