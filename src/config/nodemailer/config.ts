@@ -221,7 +221,7 @@ export const sendQRCodeAccountConfirmation = async (
     }
   );
   loadImage(path.join(__dirname, "images/card.png")).then(async (imageObj) => {
-    context!.drawImage(imageObj, 0, 0, 425, 250);
+    context!.drawImage(imageObj, 0, 0, 425, 250, 0, 0, 425, 250);
     context!.font = "12pt Intel";
     context!.fillStyle = "#ffffff";
     context!.textAlign = "start";
