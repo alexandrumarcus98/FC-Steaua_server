@@ -2,7 +2,10 @@ import { Types } from "mongoose";
 import nodemailer from "nodemailer";
 import QRCode from "qrcode";
 import { config } from "../config";
-
+import path from "path";
+import { createCanvas, loadImage } from "canvas";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
 export const sendOTPTemplate = (number: string) => {
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -48,7 +51,8 @@ export const sendOTPTemplate = (number: string) => {
 export const sendQRCodeAndConfirmTemplate = (
   code: string,
   prenume: string,
-  nrComanda: string
+  nrComanda: string,
+  canvasUrl: string
 ) => {
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -75,7 +79,8 @@ export const sendQRCodeAndConfirmTemplate = (
 										<div style="color: rgb(0, 0, 0); text-align: left;">
 											<h1 style="margin: 1rem 0">Salut, ${prenume},</h1>
 											<p style="padding-bottom: 16px">Contul tău a fost creat cu success. Foloseste QR-ul de mai jos pentru a te bucura de beneficiile noastre, privind comanda cu nr-ul ${nrComanda}.</p>
-											<img src="${code}">
+											<img style="padding-bottom: 16px" src="${code}" />
+											<img style="padding-bottom: 16px" src="${canvasUrl}" />
 											<p style="padding-bottom: 16px">Mulțumim, <br>Ultima Redută 1947</p>
 										</div>
 									</div>
@@ -189,24 +194,69 @@ export const sendPasswordForgotEmail = async (
 };
 
 export const sendQRCodeAccountConfirmation = async (
+  tipAbonament: string,
+  nrMembru: string,
+  nume: string,
   email: string,
   prenume: string,
   serieUtilizator: string,
   nrComanda: string
 ) => {
-  try {
-    let img = await QRCode.toDataURL(
-      `https://ultima-reduta.vercel.app/verificareMembru/${serieUtilizator}`
+  const canvas = createCanvas(200, 200);
+  const context = canvas.getContext("2d");
+  loadImage("examples/images/lime-cat.jpg").then(async (imageObj) => {
+    context!.drawImage(
+      imageObj,
+      0,
+      0,
+      imageObj.width,
+      imageObj.height,
+      0,
+      0,
+      425,
+      250
     );
-    let emailTransporter = await createTransporter();
-    await emailTransporter.sendMail({
-      from: "Ultima Redută 1947",
-      attachDataUrls: true,
-      to: email,
-      subject: `Ultima Redută - comanda ${nrComanda} și confirmare creare cont.`,
-      html: sendQRCodeAndConfirmTemplate(img, prenume, nrComanda),
-    });
-  } catch (err) {
-    return err;
-  }
+    context!.font = "12pt Calibri";
+    context!.fillStyle = "#ffffff";
+    context!.textAlign = "start";
+    context!.fillText(`${nume} ${prenume}`, 25, 200);
+    context!.font = "6pt Calibri";
+    context!.fillStyle = "#ffffff";
+    context!.textAlign = "center";
+    context!.fillText(`${serieUtilizator}`, canvas?.width! / 2, 240);
+
+    context!.font = "9pt Calibri";
+    context!.fillStyle = "#ffffff";
+    context!.textAlign = "center";
+    context!.fillText(nrMembru, canvas?.width! - 50, 200);
+
+    context!.font = "12pt Calibri";
+    context!.fillStyle = "#ffffff";
+    context!.textAlign = "center";
+    context!.fillText(
+      tipAbonament === "tipAbonamnet_7" ? "Card 7 mai" : "Card 1947",
+      canvas?.width! / 2,
+      70
+    );
+    try {
+      let img = await QRCode.toDataURL(
+        `https://ultima-reduta.vercel.app/verificareMembru/${serieUtilizator}`
+      );
+      let emailTransporter = await createTransporter();
+      await emailTransporter.sendMail({
+        from: "Ultima Redută 1947",
+        attachDataUrls: true,
+        to: email,
+        subject: `Ultima Redută - comanda ${nrComanda} și confirmare creare cont.`,
+        html: sendQRCodeAndConfirmTemplate(
+          img,
+          prenume,
+          nrComanda,
+          canvas.toDataURL()
+        ),
+      });
+    } catch (err) {
+      return err;
+    }
+  });
 };

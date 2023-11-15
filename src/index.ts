@@ -118,14 +118,6 @@ let server = app.listen(port, "0.0.0.0", () => {
   log(chalk.bgYellow.black(`Server running at: http://${ipAddress}:${port}`));
 });
 
-let exitHandler = () => {
-  if (server) {
-    server.close(() => process.exit(1));
-  } else {
-    process.exit(1);
-  }
-};
-
 process
   .on("unhandledRejection", (reason, p) => {
     console.error(reason, "Unhandled Rejection at Promise", p);

@@ -1,5 +1,4 @@
 import asyncHandler from "express-async-handler";
-import bcrypt from "bcrypt";
 import geoip from "geoip-lite";
 import MembruFizic from "src/models/membruFizic";
 import MembruAsociat from "src/models/membruAsociat";
@@ -134,6 +133,9 @@ const inregistrareMembruFizic: any = asyncHandler(
             await MembruAsociat.insertMany(newMembrii)
               .then(() => {
                 sendQRCodeAccountConfirmation(
+                  user?.tipAbonament,
+                  user?.nrMembru,
+                  user?.nume,
                   user?.email,
                   user?.prenume,
                   user?.serieUtilizator,
@@ -155,6 +157,9 @@ const inregistrareMembruFizic: any = asyncHandler(
               .catch((err) => res.status(401).json({ message: err }));
         } else {
           sendQRCodeAccountConfirmation(
+            user?.tipAbonament,
+            user?.nrMembru,
+            user?.nume,
             user?.email,
             user?.prenume,
             user?.serieUtilizator,

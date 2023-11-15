@@ -4,7 +4,6 @@ import MembruFizic from "src/models/membruFizic";
 
 const detaliiMembruFizic: any = asyncHandler(
   async (req, res): Promise<any> => {
-    console.log(req.cookies);
     const cookiesNoSplit = req.header("Cookie");
     const cookies = cookiesNoSplit?.split(";");
     let foundToken = "";
