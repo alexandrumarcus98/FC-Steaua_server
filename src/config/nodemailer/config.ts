@@ -81,8 +81,16 @@ export const sendQRCodeAndConfirmTemplate = (
 										<div style="color: rgb(0, 0, 0); text-align: left;">
 											<h1 style="margin: 1rem 0">Salut, ${prenume},</h1>
 											<p style="padding-bottom: 16px;">Contul tău a fost creat cu success. Foloseste QR-ul de mai jos pentru a te bucura de beneficiile noastre, privind comanda cu nr-ul ${nrComanda}.</p>
-											<img style="padding-bottom: 16px;" src="${code}" />
-											<img style="padding-bottom: 16px; width: 100%;" src="${canvasUrl}" />
+											<div style="padding-bottom: 16px;">
+												<img src="${code}" />
+											</div>
+											<table cellpadding="2" cellspacing="2" width="425" style="padding-bottom: 16px;">
+												<tr>
+													<td width="425" height="250" align="center">
+															<img src="${canvasUrl}" style="display: block; max-width: 100%; max-height:100%;" />
+													</td>
+												</tr>
+											</table>
 											<p style="padding-bottom: 16px">Mulțumim, <br>Ultima Redută 1947</p>
 										</div>
 									</div>
@@ -210,7 +218,7 @@ export const sendQRCodeAccountConfirmation = async (
     family: " Intel",
   });
   loadImage(path.join(__dirname, "images/card.png")).then(async (imageObj) => {
-    context!.drawImage(imageObj, 0, 0, 425, 250, 0, 0, 425, 250);
+    context!.drawImage(imageObj, 0, 0, 425, 250);
     context!.font = "12pt Intel";
     context!.fillStyle = "#ffffff";
     context!.textAlign = "start";
