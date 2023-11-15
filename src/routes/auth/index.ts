@@ -1,7 +1,7 @@
 import express, { Router } from "express";
-import { inregistrareMembruFizic } from "src/controllers/auth/inregistrare/membruFizic";
 import { inregistrareMembruJuridic } from "src/controllers/auth/inregistrare/membruJuridic";
 import { logareMembruFizic } from "src/controllers/auth/logare/membruFizic";
+import { controller } from "src/controllers/auth/membruFizic/controller";
 import {
   saveNewPassword,
   sendEmailOTPFizic,
@@ -14,7 +14,8 @@ import {
 } from "src/controllers/auth/verification";
 import rateLimitMiddlewareMail from "src/utils/limiters";
 const router: Router = express.Router();
-router.route("/inregistrare/fizic").post(inregistrareMembruFizic);
+router.route("/inregistrare/fizic").post(controller.create);
+router.route("/stergeMembru/:id").post(controller.destroy);
 
 router.route("/inregistrare/juridic").post(inregistrareMembruJuridic);
 

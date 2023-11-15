@@ -1,45 +1,35 @@
 {
-	"compilerOptions": {
-		"resolveJsonModule": true,
-		"target": "es6",
-		"module": "ESNext",
-		"moduleResolution": "Node",
-		"lib": [
-			"dom",
-			"dom.iterable",
-			"esnext"
-		],
-		"typeRoots": [
-			"src/typeses",
-			"./node_modules/@types"
-		],
-		"outDir": "./dist",
-		"declaration": true,
-		"allowJs": true,
-		"baseUrl": "",
-		"esModuleInterop": true,
-		"sourceMap": true,
-		"rootDir": "",
-		"noEmit": true,
-		"allowImportingTsExtensions": true,
-		"allowUnreachableCode": true,
-	},
-	"ts-node": {
-		"experimentalSpecifierResolution": "node",
-		"transpileOnly": true,
-		"esm": true,
-	},
-	"include": [
-		"next-env.d.ts",
-		"twin.d.ts",
-		"**/*.ts",
-		"src/**/*.tsx",
-		"src/**/*.ts",
-		"src/global.ts",
-	],
-	"exclude": [
-		"node_modules",
-		"**/*.spec.ts",
-		"./package.json"
-	],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "target": "es6",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "typeRoots": ["src/typeses", "./node_modules/@types"],
+    "outDir": "./dist",
+    "allowJs": true,
+    "baseUrl": "",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "rootDir": "",
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "allowUnreachableCode": true
+  },
+  "ts-node": {
+    "experimentalSpecifierResolution": "node",
+    "transpileOnly": true,
+    "esm": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "twin.d.ts",
+    "**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.ts",
+    "src/global.ts"
+  ],
+  "exclude": ["node_modules", "**/*.spec.ts", "./package.json"]
 }

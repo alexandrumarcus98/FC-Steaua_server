@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
 import { IMembruAsociat } from "src/global";
 export const membruAsociatSchema = new mongoose.Schema<IMembruAsociat>({
@@ -30,6 +30,9 @@ export const membruAsociatSchema = new mongoose.Schema<IMembruAsociat>({
 	},
 	adresaAsociat: {
 		type: String,
+	},
+	parentUserId: {
+		type: mongoose.Schema.Types.ObjectId
 	},
 	tipAbonament: {
 		type: String

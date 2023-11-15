@@ -1,3 +1,5 @@
+import { ObjectId } from "mongoose";
+
 export interface IMembruFizic extends Document {
   email: string;
   password: string;
@@ -32,6 +34,7 @@ export interface IMembruAsociat extends Document {
   tipAbonament: string;
   serieUtilizator: string;
   nrMembru: string;
+  parentUserId: ObjectId;
 }
 
 export interface IMembruJuridic extends Document {

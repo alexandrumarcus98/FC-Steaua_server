@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IMembruFizic } from "src/global";
 import { membruAsociatSchema } from "./membruAsociat";
 
-const membruFizicSchema: any = new mongoose.Schema<IMembruFizic>({
+const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
 	email: {
 		type: String,
 		required: true,
@@ -60,15 +60,13 @@ membruFizicSchema.pre('save', async function (next: any) {
   this.password = await bcrypt.hash(this.password, salt)
 })
 
-membruFizicSchema.pre("deleteOne", { document: true }, async function(next) {
-	let id = this.getQuery()["_id"];
-	await mongoose.model("Membru Asociat").deleteMany({ property: id }, function(err, result) {
-		if (err) {
-			next(err);
-		} else {
-			next();
-		}
-	});
+membruFizicSchema.pre("deleteOne", { document: true, query: false }, async function(next) {
+	let id = this?._id
+	await mongoose.model("Membru Asociat").deleteMany({ parentUserId: id })
+	.then(() => {
+		next()
+	})
+	.catch(err => next(err))
 });
 
 membruFizicSchema.methods.verifyPassword = async function (enteredPassword: string) {

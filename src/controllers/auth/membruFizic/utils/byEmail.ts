@@ -7,7 +7,7 @@ import { sendQRCodeAccountConfirmation } from "src/config/nodemailer/config";
 import MembruJuridic from "src/models/membruJuridic";
 import NodeGeocoder from "node-geocoder";
 
-const inregistrareMembruFizic: any = asyncHandler(
+export const inregistrareMembruFizicByEmail = asyncHandler(
   async (req, res): Promise<any> => {
     if (req.method !== "POST")
       return res.status(404).json({ message: "Ceva nu a mers bine..." });
@@ -111,6 +111,7 @@ const inregistrareMembruFizic: any = asyncHandler(
                     .padStart(7, "0"),
                   tipAbonament: tipAbonament,
                   locatie: response[0] || null,
+                  parentUserId: user?._id,
                 };
               else
                 return {
@@ -125,6 +126,7 @@ const inregistrareMembruFizic: any = asyncHandler(
                     .toString()
                     .padStart(7, "0"),
                   tipAbonament: tipAbonament,
+                  parentUserId: user?._id,
                 };
             })
           );
@@ -186,5 +188,3 @@ const inregistrareMembruFizic: any = asyncHandler(
     }
   }
 );
-
-export { inregistrareMembruFizic };

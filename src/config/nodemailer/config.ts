@@ -17,7 +17,120 @@ export const sendOTPTemplate = (number: string) => {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Verificare Cont</title>
 	<!--[if mso]><style type="text/css">body, table, td, a { font-family: Arial, Helvetica, sans-serif !important; }</style><![endif]-->
+	<style type="text/css">
+
+	body {
+		margin: 0;
+		padding: 0;
+		}
+
+	table {
+		border-collapse:collapse;
+		mso-table-lspace:0;
+		mso-table-rspace:0;
+		}
+
+	h1 {
+		margin:0.67em 0;
+		font-size:2em;
+		}
+	h2 {
+		margin:0.83em 0;
+		font-size:1.5em;
+		}
+
+	html[dir] h3, h3 {
+		margin:1em 0;
+		font-size:1.17em;
+		}
+
+	span.MsoHyperlink {
+		color: inherit !important;
+		mso-style-priority: 99 !important;
+		}
+
+	span.MsoHyperlinkFollowed {
+		color: inherit !important;
+		mso-style-priority: 99 !important;
+	}
+
+	#root [x-apple-data-detectors=true],
+	a[x-apple-data-detectors=true]{
+		color: inherit !important;
+		text-decoration: inherit !important;
+	}
+
+	[x-apple-data-detectors-type="calendar-event"] {
+		color: inherit !important;
+		-webkit-text-decoration-color: inherit !important;
+	}
+
+	u + .body a {
+		color: inherit;
+		text-decoration: none;
+		font-size: inherit;
+		font-weight: inherit;
+		line-height: inherit;
+		}
+
+	.body {
+		word-wrap: normal;
+		word-spacing:normal;
+	}
+
+	div[style*="margin: 16px 0"] {
+		margin: 0!important;
+		}
+
+	#message *{
+		all:revert
+	}
+
+	[data-markjs]{
+		color:inherit;
+		padding:0;
+		background:none;
+	}
+
+	body,
+	table,
+	td,
+	a {
+		-ms-text-size-adjust: 100%;
+		-webkit-text-size-adjust: 100%;
+	}
+
+	body {
+		width: 100% !important;
+		height: 100% !important;
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+
+	a[x-apple-data-detectors] {
+		font-family: inherit !important;
+		font-size: inherit !important;
+		font-weight: inherit !important;
+		line-height: inherit !important;
+		color: inherit !important;
+		text-decoration: none !important;
+	}
+
+	div[style*="margin: 16px 0;"] {
+		margin: 0 !important;
+	}
+
+	img {
+		-ms-interpolation-mode: bicubic;
+		height: auto;
+		line-height: 100%;
+		text-decoration: none;
+		border: 0;
+		outline: none;
+	}
+	</style>
 </head>
+
 
 <body style="font-family: Helvetica, Arial, sans-serif; margin: 0px; padding: 0px; background-color: #ffffff;">
 	<table role="presentation"
@@ -63,7 +176,118 @@ export const sendQRCodeAndConfirmTemplate = (
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>QR CODE - Create cont</title>
-	<!--[if mso]><style type="text/css">body, table, td, a { font-family: Arial, Helvetica, sans-serif !important; }</style><![endif]-->
+	<style type="text/css">
+
+	body {
+		margin: 0;
+		padding: 0;
+		}
+
+	table {
+		border-collapse:collapse;
+		mso-table-lspace:0;
+		mso-table-rspace:0;
+		}
+
+	h1 {
+		margin:0.67em 0;
+		font-size:2em;
+		}
+	h2 {
+		margin:0.83em 0;
+		font-size:1.5em;
+		}
+
+	html[dir] h3, h3 {
+		margin:1em 0;
+		font-size:1.17em;
+		}
+
+	span.MsoHyperlink {
+		color: inherit !important;
+		mso-style-priority: 99 !important;
+		}
+
+	span.MsoHyperlinkFollowed {
+		color: inherit !important;
+		mso-style-priority: 99 !important;
+	}
+
+	#root [x-apple-data-detectors=true],
+	a[x-apple-data-detectors=true]{
+		color: inherit !important;
+		text-decoration: inherit !important;
+	}
+
+	[x-apple-data-detectors-type="calendar-event"] {
+		color: inherit !important;
+		-webkit-text-decoration-color: inherit !important;
+	}
+
+	u + .body a {
+		color: inherit;
+		text-decoration: none;
+		font-size: inherit;
+		font-weight: inherit;
+		line-height: inherit;
+		}
+
+	.body {
+		word-wrap: normal;
+		word-spacing:normal;
+	}
+
+	div[style*="margin: 16px 0"] {
+		margin: 0!important;
+		}
+
+	#message *{
+		all:revert
+	}
+
+	[data-markjs]{
+		color:inherit;
+		padding:0;
+		background:none;
+	}
+
+	body,
+	table,
+	td,
+	a {
+		-ms-text-size-adjust: 100%;
+		-webkit-text-size-adjust: 100%;
+	}
+
+	body {
+		width: 100% !important;
+		height: 100% !important;
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+
+	a[x-apple-data-detectors] {
+		font-family: inherit !important;
+		font-size: inherit !important;
+		font-weight: inherit !important;
+		line-height: inherit !important;
+		color: inherit !important;
+		text-decoration: none !important;
+	}
+
+	div[style*="margin: 16px 0;"] {
+		margin: 0 !important;
+	}
+
+	img {
+		-ms-interpolation-mode: bicubic;
+		height: auto;
+		line-height: 100%;
+		text-decoration: none;
+		border: 0;
+		outline: none;
+	}
+	</style>
 </head>
 
 <body style="font-family: Helvetica, Arial, sans-serif; margin: 0px; padding: 0px; background-color: #ffffff;">
@@ -82,12 +306,12 @@ export const sendQRCodeAndConfirmTemplate = (
 											<h1 style="margin: 1rem 0">Salut, ${prenume},</h1>
 											<p style="padding-bottom: 16px;">Contul tău a fost creat cu success. Foloseste QR-ul de mai jos pentru a te bucura de beneficiile noastre, privind comanda cu nr-ul ${nrComanda}.</p>
 											<div style="padding-bottom: 16px;">
-												<img src="${code}" />
+												<img src="${code}" id="qrCode" />
 											</div>
-											<table cellpadding="2" cellspacing="2" width="425" style="padding-bottom: 16px; border-collapse: collapse; border: 0px; border-spacing: 0px; font-family: Arial, Helvetica, sans-serif; background-color: rgb(239, 239, 239);">
+											<table cellpadding="2" cellspacing="2" width="212" height="125" style="padding-bottom: 16px; border-collapse: collapse; border: 0px; border-spacing: 0px; font-family: Arial, Helvetica, sans-serif;">
 												<tr>
-													<td width="425" height="250" align="center">
-															<img src="${canvasUrl}" style="display: block; max-width: 100%; max-height:100%;" />
+													<td width="212" height="125" align="center">
+														<img src="cid:cardsteaua" alt="Card Steaua" border="0" width="212" height="125" style="display: block; width: 212px; max-width: 212px; min-width: 125px;" title="Card Steaua">
 													</td>
 												</tr>
 											</table>
@@ -106,7 +330,7 @@ export const sendQRCodeAndConfirmTemplate = (
 </html>`;
 };
 
-const forgotPasswordEmailTemplate = (
+export const forgotPasswordEmailTemplate = (
   tokenForgotPw: string,
   userId: Types.ObjectId,
   prenume: string
@@ -118,7 +342,118 @@ const forgotPasswordEmailTemplate = (
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>QR CODE - Create cont</title>
-	<!--[if mso]><style type="text/css">body, table, td, a { font-family: Arial, Helvetica, sans-serif !important; }</style><![endif]-->
+		<style type="text/css">
+
+	body {
+		margin: 0;
+		padding: 0;
+		}
+
+	table {
+		border-collapse:collapse;
+		mso-table-lspace:0;
+		mso-table-rspace:0;
+		}
+
+	h1 {
+		margin:0.67em 0;
+		font-size:2em;
+		}
+	h2 {
+		margin:0.83em 0;
+		font-size:1.5em;
+		}
+
+	html[dir] h3, h3 {
+		margin:1em 0;
+		font-size:1.17em;
+		}
+
+	span.MsoHyperlink {
+		color: inherit !important;
+		mso-style-priority: 99 !important;
+		}
+
+	span.MsoHyperlinkFollowed {
+		color: inherit !important;
+		mso-style-priority: 99 !important;
+	}
+
+	#root [x-apple-data-detectors=true],
+	a[x-apple-data-detectors=true]{
+		color: inherit !important;
+		text-decoration: inherit !important;
+	}
+
+	[x-apple-data-detectors-type="calendar-event"] {
+		color: inherit !important;
+		-webkit-text-decoration-color: inherit !important;
+	}
+
+	u + .body a {
+		color: inherit;
+		text-decoration: none;
+		font-size: inherit;
+		font-weight: inherit;
+		line-height: inherit;
+		}
+
+	.body {
+		word-wrap: normal;
+		word-spacing:normal;
+	}
+
+	div[style*="margin: 16px 0"] {
+		margin: 0!important;
+		}
+
+	#message *{
+		all:revert
+	}
+
+	[data-markjs]{
+		color:inherit;
+		padding:0;
+		background:none;
+	}
+
+	body,
+	table,
+	td,
+	a {
+		-ms-text-size-adjust: 100%;
+		-webkit-text-size-adjust: 100%;
+	}
+
+	body {
+		width: 100% !important;
+		height: 100% !important;
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+
+	a[x-apple-data-detectors] {
+		font-family: inherit !important;
+		font-size: inherit !important;
+		font-weight: inherit !important;
+		line-height: inherit !important;
+		color: inherit !important;
+		text-decoration: none !important;
+	}
+
+	div[style*="margin: 16px 0;"] {
+		margin: 0 !important;
+	}
+
+	img {
+		-ms-interpolation-mode: bicubic;
+		height: auto;
+		line-height: 100%;
+		text-decoration: none;
+		border: 0;
+		outline: none;
+	}
+	</style>
 </head>
 
 <body style="font-family: Helvetica, Arial, sans-serif; margin: 0px; padding: 0px; background-color: #ffffff;">
@@ -212,7 +547,7 @@ export const sendQRCodeAccountConfirmation = async (
   serieUtilizator: string,
   nrComanda: string
 ) => {
-  const canvas = createCanvas(200, 200);
+  const canvas = createCanvas(425, 250);
   const context = canvas.getContext("2d");
   registerFont(
     path.join(__dirname, "fonts/intelone-mono-font-family-regular.otf"),
@@ -221,7 +556,17 @@ export const sendQRCodeAccountConfirmation = async (
     }
   );
   loadImage(path.join(__dirname, "images/card.png")).then(async (imageObj) => {
-    context!.drawImage(imageObj, 0, 0, 425, 250, 0, 0, 425, 250);
+    context!.drawImage(
+      imageObj,
+      0,
+      0,
+      imageObj.width,
+      imageObj.height,
+      0,
+      0,
+      canvas?.width,
+      canvas?.height
+    );
     context!.font = "12pt Intel";
     context!.fillStyle = "#ffffff";
     context!.textAlign = "start";
@@ -229,7 +574,11 @@ export const sendQRCodeAccountConfirmation = async (
     context!.font = "6pt Intel";
     context!.fillStyle = "#ffffff";
     context!.textAlign = "center";
-    context!.fillText(`${serieUtilizator}`, canvas?.width! / 2, 240);
+    context!.fillText(
+      `${serieUtilizator}`,
+      canvas?.width! / 2,
+      canvas.height - 10
+    );
 
     context!.font = "9pt Intel";
     context!.fillStyle = "#ffffff";
@@ -254,6 +603,13 @@ export const sendQRCodeAccountConfirmation = async (
         attachDataUrls: true,
         to: email,
         subject: `Ultima Redută - comanda ${nrComanda} și confirmare creare cont.`,
+        attachments: [
+          {
+            filename: "cardSteaua.png",
+            path: canvas.toDataURL(),
+            cid: "cardsteaua",
+          },
+        ],
         html: sendQRCodeAndConfirmTemplate(
           img,
           prenume,
@@ -262,7 +618,6 @@ export const sendQRCodeAccountConfirmation = async (
         ),
       });
     } catch (err) {
-      console.log(err);
       return err;
     }
   });
