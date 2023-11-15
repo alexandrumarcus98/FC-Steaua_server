@@ -84,7 +84,7 @@ export const sendQRCodeAndConfirmTemplate = (
 											<div style="padding-bottom: 16px;">
 												<img src="${code}" />
 											</div>
-											<table cellpadding="2" cellspacing="2" width="425" style="padding-bottom: 16px;">
+											<table cellpadding="2" cellspacing="2" width="425" style="padding-bottom: 16px; border-collapse: collapse; border: 0px; border-spacing: 0px; font-family: Arial, Helvetica, sans-serif; background-color: rgb(239, 239, 239);">
 												<tr>
 													<td width="425" height="250" align="center">
 															<img src="${canvasUrl}" style="display: block; max-width: 100%; max-height:100%;" />
