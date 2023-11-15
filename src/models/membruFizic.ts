@@ -19,6 +19,7 @@ const membruFizicSchema: any = new mongoose.Schema<IMembruFizic>({
 	data: Object,
 	password: {
 		type: String,
+		maxlength: 255,
 	},
 	comenzi: Array<{
 		nrComanda: string
@@ -48,18 +49,15 @@ const membruFizicSchema: any = new mongoose.Schema<IMembruFizic>({
 	}],
 	semnatura: String
 })
-membruFizicSchema.pre('save', async function (next) {
+
+
+membruFizicSchema.pre('save', async function (next: any) {
   if (!this.isModified('password')) {
-    return next()
+    next()
   }
 
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    return next();
-  } catch (error) {
-    return next(error);
-  }
+	const salt = await bcrypt.genSalt(10)
+  this.password = await bcrypt.hash(this.password, salt)
 })
 
 membruFizicSchema.pre("deleteOne", { document: true }, async function(next) {
@@ -74,7 +72,10 @@ membruFizicSchema.pre("deleteOne", { document: true }, async function(next) {
 });
 
 membruFizicSchema.methods.verifyPassword = async function (enteredPassword: string) {
-	return await bcrypt.compare(enteredPassword, this.password)
+  return bcrypt.compare(enteredPassword, this.password, (err, same) => {
+		if(err) return false
+		else return same
+	})
 }
 
 

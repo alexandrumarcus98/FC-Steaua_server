@@ -42,9 +42,6 @@ const inregistrareMembruFizic: any = asyncHandler(
         .json({ message: "Ne pare rau, emailul furnizat nu este corect." });
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(parola, salt);
-
     const userExists = await MembruFizic.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "Utilizatorul exista deja..." });
@@ -64,8 +61,8 @@ const inregistrareMembruFizic: any = asyncHandler(
         .toString()
         .padStart(7, "0");
       const user = await MembruFizic.create({
+        parola: parola,
         email: email,
-        password: hashedPassword,
         comenzi: comenzi,
         tipAbonament: tipAbonament,
         nrMembru: nrMembru,
@@ -91,6 +88,8 @@ const inregistrareMembruFizic: any = asyncHandler(
         membrii: membrii,
         adresa: adresa,
       });
+
+      user.save();
 
       if (user?._id) {
         if (membrii?.length) {

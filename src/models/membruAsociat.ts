@@ -28,6 +28,9 @@ export const membruAsociatSchema = new mongoose.Schema<IMembruAsociat>({
 		default: "0000001",
 		unique: true,
 	},
+	adresaAsociat: {
+		type: String,
+	},
 	tipAbonament: {
 		type: String
 	},

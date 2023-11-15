@@ -126,8 +126,14 @@ let exitHandler = () => {
   }
 };
 
-process.on("unhandledRejection", () => exitHandler());
-process.on("uncaughtException", () => exitHandler());
+process
+  .on("unhandledRejection", (reason, p) => {
+    console.error(reason, "Unhandled Rejection at Promise", p);
+  })
+  .on("uncaughtException", (err) => {
+    console.error(err, "Uncaught Exception thrown");
+    process.exit(1);
+  });
 
 process.on("SIGTERM", () => {
   if (server) server.close();
