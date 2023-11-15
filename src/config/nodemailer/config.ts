@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 import QRCode from "qrcode";
 import { config } from "../config";
 import path from "path";
-import { createCanvas, loadImage } from "canvas";
+import { createCanvas, loadImage, registerFont } from "canvas";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -206,6 +206,9 @@ export const sendQRCodeAccountConfirmation = async (
 ) => {
   const canvas = createCanvas(200, 200);
   const context = canvas.getContext("2d");
+  registerFont("../../fonts/intelone-mono-font-family-regular.otf", {
+    family: " Intel",
+  });
   loadImage(path.join(__dirname, "images/card.png")).then(async (imageObj) => {
     context!.drawImage(
       imageObj,
@@ -218,21 +221,21 @@ export const sendQRCodeAccountConfirmation = async (
       425,
       250
     );
-    context!.font = "12pt Impact";
+    context!.font = "12pt Intel";
     context!.fillStyle = "#ffffff";
     context!.textAlign = "start";
     context!.fillText(`${nume} ${prenume}`, 25, 200);
-    context!.font = "6pt Impact";
+    context!.font = "6pt Intel";
     context!.fillStyle = "#ffffff";
     context!.textAlign = "center";
     context!.fillText(`${serieUtilizator}`, canvas?.width! / 2, 240);
 
-    context!.font = "9pt Impact";
+    context!.font = "9pt Intel";
     context!.fillStyle = "#ffffff";
     context!.textAlign = "center";
     context!.fillText(nrMembru, canvas?.width! - 50, 200);
 
-    context!.font = "12pt Impact";
+    context!.font = "12pt Intel";
     context!.fillStyle = "#ffffff";
     context!.textAlign = "center";
     context!.fillText(
