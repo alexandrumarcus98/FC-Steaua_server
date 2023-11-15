@@ -218,21 +218,21 @@ export const sendQRCodeAccountConfirmation = async (
       425,
       250
     );
-    context!.font = "12pt Calibri";
+    context!.font = "12pt Impact";
     context!.fillStyle = "#ffffff";
     context!.textAlign = "start";
     context!.fillText(`${nume} ${prenume}`, 25, 200);
-    context!.font = "6pt Calibri";
+    context!.font = "6pt Impact";
     context!.fillStyle = "#ffffff";
     context!.textAlign = "center";
     context!.fillText(`${serieUtilizator}`, canvas?.width! / 2, 240);
 
-    context!.font = "9pt Calibri";
+    context!.font = "9pt Impact";
     context!.fillStyle = "#ffffff";
     context!.textAlign = "center";
     context!.fillText(nrMembru, canvas?.width! - 50, 200);
 
-    context!.font = "12pt Calibri";
+    context!.font = "12pt Impact";
     context!.fillStyle = "#ffffff";
     context!.textAlign = "center";
     context!.fillText(
