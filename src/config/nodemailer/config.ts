@@ -214,9 +214,12 @@ export const sendQRCodeAccountConfirmation = async (
 ) => {
   const canvas = createCanvas(200, 200);
   const context = canvas.getContext("2d");
-  registerFont("../../fonts/intelone-mono-font-family-regular.otf", {
-    family: " Intel",
-  });
+  registerFont(
+    path.join(__dirname, "fonts/intelone-mono-font-family-regular.otf"),
+    {
+      family: " Intel",
+    }
+  );
   loadImage(path.join(__dirname, "images/card.png")).then(async (imageObj) => {
     context!.drawImage(imageObj, 0, 0, 425, 250);
     context!.font = "12pt Intel";
