@@ -6,6 +6,8 @@ import path from "path";
 import { createCanvas, loadImage } from "canvas";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 export const sendOTPTemplate = (number: string) => {
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -204,7 +206,7 @@ export const sendQRCodeAccountConfirmation = async (
 ) => {
   const canvas = createCanvas(200, 200);
   const context = canvas.getContext("2d");
-  loadImage("examples/images/lime-cat.jpg").then(async (imageObj) => {
+  loadImage(path.join(__dirname, "images/card.png")).then(async (imageObj) => {
     context!.drawImage(
       imageObj,
       0,
@@ -256,6 +258,7 @@ export const sendQRCodeAccountConfirmation = async (
         ),
       });
     } catch (err) {
+      console.log(err);
       return err;
     }
   });
