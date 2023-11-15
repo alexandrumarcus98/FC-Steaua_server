@@ -65,7 +65,7 @@ const inregistrareMembruFizic: any = asyncHandler(
         .padStart(7, "0");
       const user = await MembruFizic.create({
         email: email,
-        parola: hashedPassword,
+        password: hashedPassword,
         comenzi: comenzi,
         tipAbonament: tipAbonament,
         nrMembru: nrMembru,

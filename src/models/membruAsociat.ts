@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
 import { IMembruAsociat } from "src/global";
-const membruAsociatSchema = new mongoose.Schema<IMembruAsociat>({
+export const membruAsociatSchema = new mongoose.Schema<IMembruAsociat>({
 	numeAsociat: {
 		type: String
 	},

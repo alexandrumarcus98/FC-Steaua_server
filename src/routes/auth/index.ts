@@ -12,6 +12,7 @@ import {
   verifyOTPEmailJuridic,
   verifySerieUtilizator,
 } from "src/controllers/auth/verification";
+import rateLimitMiddlewareMail from "src/utils/limiters";
 const router: Router = express.Router();
 router.route("/inregistrare/fizic").post(inregistrareMembruFizic);
 
@@ -21,7 +22,9 @@ router.route("/verificare/fizic/:serie").post(verifySerieUtilizator);
 
 router.route("/logare/fizic").post(logareMembruFizic);
 
-router.route("/emailMsg/fizic/trimite").post(sendEmailOTPFizic);
+router
+  .route("/emailMsg/fizic/trimite")
+  .post(rateLimitMiddlewareMail, sendEmailOTPFizic);
 
 router.route("/emailMsg/juridic/trimite").post(sendEmailOTPJuridic);
 

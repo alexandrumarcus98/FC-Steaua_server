@@ -30,18 +30,9 @@ const sendEmailOTPFizic: any = asyncHandler(
       await TokenEmailOTP.findOneAndDelete({
         email: email,
       }).then(async () => {
-        let token = await TokenEmailOTP.create({
-          email: email,
-          number: number,
-          token: tokenNew,
+        return res.status(401).json({
+          message: "Un email a mai fost trimis deja, te rog reincearca.",
         });
-        if (token) {
-          sendVerificationCode(email, number.toString())
-            .then(() =>
-              res.status(201).json({ message: "Email a fost trimis." })
-            )
-            .catch(() => res.status(404).json({ message: "error" }));
-        }
       });
     } else {
       let token = await TokenEmailOTP.create({
@@ -192,7 +183,7 @@ const sendEmailResetPassword: any = asyncHandler(
     const { email } = req.body;
 
     if (!email) {
-      return res.status(401).json({ message: "All inputs are required" });
+      return res.status(401).json({ message: "Email invalid." });
     }
 
     const userExists = await MembruFizic.findOne({ email });

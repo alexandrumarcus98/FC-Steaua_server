@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcrypt'
 import { v4 as uuidv4 } from 'uuid';
-import { IMembruAsociat, IMembruFizic } from "src/global";
-const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
+import { IMembruFizic } from "src/global";
+import { membruAsociatSchema } from "./membruAsociat";
+
+const membruFizicSchema: any = new mongoose.Schema<IMembruFizic>({
 	email: {
 		type: String,
 		required: true,
@@ -40,23 +42,40 @@ const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
 	dataNasterii: String,
 	tipAbonament: String,
 	nrTel: String,
-	membrii: Array<IMembruAsociat>,
+	membrii: [{
+		type: membruAsociatSchema,
+		ref: 'Membru Asociat'
+	}],
 	semnatura: String
 })
 membruFizicSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
-    next()
+    return next()
   }
 
-  const salt = await bcrypt.genSalt(10)
-  this.password = await bcrypt.hash(this.password, salt)
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    return next();
+  } catch (error) {
+    return next(error);
+  }
 })
 
-membruFizicSchema.methods.verifyPassword = async function (password: string) {
-	const user = this;
-	const isMatch = await bcrypt.compare(password, user.password);
-	return isMatch;
-};
+membruFizicSchema.pre("deleteOne", { document: true }, async function(next) {
+	let id = this.getQuery()["_id"];
+	await mongoose.model("Membru Asociat").deleteMany({ property: id }, function(err, result) {
+		if (err) {
+			next(err);
+		} else {
+			next();
+		}
+	});
+});
+
+membruFizicSchema.methods.verifyPassword = async function (enteredPassword: string) {
+	return await bcrypt.compare(enteredPassword, this.password)
+}
 
 
 const MembruFizic = mongoose.model('Membru Fizic', membruFizicSchema)
