@@ -217,7 +217,7 @@ export const sendQRCodeAccountConfirmation = async (
   registerFont(
     path.join(__dirname, "fonts/intelone-mono-font-family-regular.otf"),
     {
-      family: " Intel",
+      family: "Intel",
     }
   );
   loadImage(path.join(__dirname, "images/card.png")).then(async (imageObj) => {
