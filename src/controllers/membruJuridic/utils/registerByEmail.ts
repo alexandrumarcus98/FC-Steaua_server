@@ -1,12 +1,12 @@
 import asyncHandler from "express-async-handler";
 import geoip from "geoip-lite";
-import { sendQRCodeAccountConfirmation } from "src/config/nodemailer/config";
-import MembruAsociat from "src/models/membruAsociat";
 import MembruFizic from "src/models/membruFizic";
+import MembruAsociat from "src/models/membruAsociat";
+import { sendQRCodeAccountConfirmation } from "src/config/nodemailer/config";
 import MembruJuridic from "src/models/membruJuridic";
 import NodeGeocoder from "node-geocoder";
 
-const inregistrareMembruJuridic: any = asyncHandler(
+export const inregistrareMembruJuridicByEmail: any = asyncHandler(
   async (req, res): Promise<any> => {
     if (req.method !== "POST")
       return res.status(404).json({ message: "Ceva nu a mers bine..." });
@@ -92,12 +92,18 @@ const inregistrareMembruJuridic: any = asyncHandler(
         },
       });
 
+      user.save();
+
       if (user?._id) {
         sendQRCodeAccountConfirmation(
+          user?.tipAbonament,
+          user?.nrMembru,
+          user?.nume,
           user?.emailCompanie,
           user?.prenume,
           user?.serieUtilizator,
-          user?.comenzi[0]?.nrComanda.toString()
+          user?.comenzi[0]?.nrComanda,
+          "juridic"
         );
         return res.status(201).json({
           nume: user?.nume,
@@ -116,5 +122,3 @@ const inregistrareMembruJuridic: any = asyncHandler(
     }
   }
 );
-
-export { inregistrareMembruJuridic };

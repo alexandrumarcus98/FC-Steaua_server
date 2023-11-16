@@ -37,6 +37,9 @@ export const membruAsociatSchema = new mongoose.Schema<IMembruAsociat>({
 	tipAbonament: {
 		type: String
 	},
+	qrCode:{
+		type: String,
+	}
 })
 
 const MembruAsociat = mongoose.model('Membru Asociat', membruAsociatSchema)

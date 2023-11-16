@@ -13,7 +13,7 @@ export interface IMembruFizic extends Document {
   prenume: string;
   dataNasterii: string;
   nrTel: string;
-  membrii: Array<any>;
+  membrii: Array<IMembruAsociat>;
   oras: string;
   regiune: string;
   tara: string;
@@ -35,6 +35,7 @@ export interface IMembruAsociat extends Document {
   serieUtilizator: string;
   nrMembru: string;
   parentUserId: ObjectId;
+  qrCode?: string;
 }
 
 export interface IMembruJuridic extends Document {
@@ -62,4 +63,6 @@ export interface IMembruJuridic extends Document {
   IBAN: string;
   codPostal: string;
   semnatura: string;
+  verifyPassword?: (p: string) => any;
+  password?: string;
 }

@@ -3,6 +3,7 @@ import geoip from "geoip-lite";
 import MembruFizic from "src/models/membruFizic";
 import MembruAsociat from "src/models/membruAsociat";
 import { IMembruAsociat } from "src/global";
+import QRCode from "qrcode";
 import { sendQRCodeAccountConfirmation } from "src/config/nodemailer/config";
 import MembruJuridic from "src/models/membruJuridic";
 import NodeGeocoder from "node-geocoder";
@@ -60,7 +61,7 @@ export const inregistrareMembruFizicByEmail = asyncHandler(
         .toString()
         .padStart(7, "0");
       const user = await MembruFizic.create({
-        parola: parola,
+        password: parola,
         email: email,
         comenzi: comenzi,
         tipAbonament: tipAbonament,
@@ -97,22 +98,43 @@ export const inregistrareMembruFizicByEmail = asyncHandler(
               const response = await geocoder?.geocode(
                 `${membru.adresaAsociat}`
               );
-              if (response[0])
-                return {
-                  ...membru,
-                  nrMembru: (
-                    lMembriiFizici +
-                    lMemmbriiAsociati +
-                    lMembriiJuridici +
-                    2 +
-                    i
-                  )
-                    .toString()
-                    .padStart(7, "0"),
-                  tipAbonament: tipAbonament,
-                  locatie: response[0] || null,
-                  parentUserId: user?._id,
-                };
+              const newImg = await QRCode.toDataURL(
+                `https://ultima-reduta.vercel.app/verificareMembru/${membru?.serieUtilizator}`
+              );
+              if (newImg?.length)
+                if (response[0])
+                  return {
+                    ...membru,
+                    nrMembru: (
+                      lMembriiFizici +
+                      lMemmbriiAsociati +
+                      lMembriiJuridici +
+                      2 +
+                      i
+                    )
+                      .toString()
+                      .padStart(7, "0"),
+                    tipAbonament: tipAbonament,
+                    locatie: response[0] || null,
+                    parentUserId: user?._id,
+                    qrCode: newImg,
+                  };
+                else
+                  return {
+                    ...membru,
+                    nrMembru: (
+                      lMembriiFizici +
+                      lMemmbriiAsociati +
+                      lMembriiJuridici +
+                      2 +
+                      i
+                    )
+                      .toString()
+                      .padStart(7, "0"),
+                    tipAbonament: tipAbonament,
+                    parentUserId: user?._id,
+                    qrCode: newImg,
+                  };
               else
                 return {
                   ...membru,
@@ -127,34 +149,39 @@ export const inregistrareMembruFizicByEmail = asyncHandler(
                     .padStart(7, "0"),
                   tipAbonament: tipAbonament,
                   parentUserId: user?._id,
+                  qrCode: newImg || "",
                 };
             })
           );
 
           if (newMembrii)
             await MembruAsociat.insertMany(newMembrii)
-              .then(() => {
-                sendQRCodeAccountConfirmation(
-                  user?.tipAbonament,
-                  user?.nrMembru,
-                  user?.nume,
-                  user?.email,
-                  user?.prenume,
-                  user?.serieUtilizator,
-                  user?.comenzi[0]?.nrComanda
-                );
-                return res.status(201).json({
-                  nume: user?.nume,
-                  prenume: user?.prenume,
-                  email: user?.email,
-                  tipAbonament: user?.tipAbonament,
-                  userId: user?._id,
-                  nrMembru: user?.nrMembru,
-                  membrii: user?.membrii,
-                  comenzi: user?.comenzi,
-                  serieUtilizator: user?.serieUtilizator,
-                  message: "Cont creat cu success.",
-                });
+              .then((e: any) => {
+                if (e) {
+                  sendQRCodeAccountConfirmation(
+                    user?.tipAbonament,
+                    user?.nrMembru,
+                    user?.nume,
+                    user?.email,
+                    user?.prenume,
+                    user?.serieUtilizator,
+                    user?.comenzi[0]?.nrComanda,
+                    "fizic",
+                    e
+                  );
+                  return res.status(201).json({
+                    nume: user?.nume,
+                    prenume: user?.prenume,
+                    email: user?.email,
+                    tipAbonament: user?.tipAbonament,
+                    userId: user?._id,
+                    nrMembru: user?.nrMembru,
+                    membrii: newMembrii,
+                    comenzi: user?.comenzi,
+                    serieUtilizator: user?.serieUtilizator,
+                    message: "Cont creat cu success.",
+                  });
+                }
               })
               .catch((err) => res.status(401).json({ message: err }));
         } else {
@@ -165,7 +192,8 @@ export const inregistrareMembruFizicByEmail = asyncHandler(
             user?.email,
             user?.prenume,
             user?.serieUtilizator,
-            user?.comenzi[0]?.nrComanda
+            user?.comenzi[0]?.nrComanda,
+            "fizic"
           );
           return res.status(201).json({
             nume: user?.nume,

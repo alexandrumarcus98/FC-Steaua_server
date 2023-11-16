@@ -5,6 +5,7 @@ import { config } from "../config";
 import path from "path";
 import { createCanvas, loadImage, registerFont } from "canvas";
 import { fileURLToPath } from "url";
+import { IMembruAsociat } from "src/global";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -167,7 +168,8 @@ export const sendQRCodeAndConfirmTemplate = (
   code: string,
   prenume: string,
   nrComanda: string,
-  canvasUrl: string
+  arrayItems?: any,
+  qrCodes?: any
 ) => {
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -305,9 +307,10 @@ export const sendQRCodeAndConfirmTemplate = (
 										<div style="color: rgb(0, 0, 0); text-align: left;">
 											<h1 style="margin: 1rem 0">Salut, ${prenume},</h1>
 											<p style="padding-bottom: 16px;">Contul tău a fost creat cu success. Foloseste QR-ul de mai jos pentru a te bucura de beneficiile noastre, privind comanda cu nr-ul ${nrComanda}.</p>
-											<div style="padding-bottom: 16px;">
+											<div style="padding-bottom: 16px;text-align:center;">
 												<img src="${code}" id="qrCode" />
 											</div>
+											${arrayItems}
 											<table cellpadding="2" cellspacing="2" width="212" height="125" style="padding-bottom: 16px; border-collapse: collapse; border: 0px; border-spacing: 0px; font-family: Arial, Helvetica, sans-serif;">
 												<tr>
 													<td width="212" height="125" align="center">
@@ -545,80 +548,224 @@ export const sendQRCodeAccountConfirmation = async (
   email: string,
   prenume: string,
   serieUtilizator: string,
-  nrComanda: string
+  nrComanda: string,
+  tip: string,
+  membrii?: Array<IMembruAsociat>
 ) => {
-  const canvas = createCanvas(425, 250);
-  const context = canvas.getContext("2d");
-  registerFont(
-    path.join(__dirname, "fonts/intelone-mono-font-family-regular.otf"),
-    {
-      family: "Intel",
-    }
-  );
   loadImage(path.join(__dirname, "images/card.png")).then(async (imageObj) => {
-    context!.drawImage(
-      imageObj,
-      0,
-      0,
-      imageObj.width,
-      imageObj.height,
-      0,
-      0,
-      canvas?.width,
-      canvas?.height
-    );
-    context!.font = "12pt Intel";
-    context!.fillStyle = "#ffffff";
-    context!.textAlign = "start";
-    context!.fillText(`${nume} ${prenume}`, 25, 200);
-    context!.font = "6pt Intel";
-    context!.fillStyle = "#ffffff";
-    context!.textAlign = "center";
-    context!.fillText(
-      `${serieUtilizator}`,
-      canvas?.width! / 2,
-      canvas.height - 10
-    );
-
-    context!.font = "9pt Intel";
-    context!.fillStyle = "#ffffff";
-    context!.textAlign = "center";
-    context!.fillText(nrMembru, canvas?.width! - 50, 200);
-
-    context!.font = "12pt Intel";
-    context!.fillStyle = "#ffffff";
-    context!.textAlign = "center";
-    context!.fillText(
-      tipAbonament === "tipAbonamnet_7" ? "Card 7 mai" : "Card 1947",
-      canvas?.width! / 2,
-      70
-    );
-    try {
-      let img = await QRCode.toDataURL(
-        `https://ultima-reduta.vercel.app/verificareMembru/${serieUtilizator}`
+    if (!membrii.length) {
+      const canvas = createCanvas(425, 250);
+      const context = canvas.getContext("2d");
+      registerFont(
+        path.join(__dirname, "fonts/intelone-mono-font-family-regular.otf"),
+        {
+          family: "Intel",
+        }
       );
-      let emailTransporter = await createTransporter();
-      await emailTransporter.sendMail({
-        from: "Ultima Redută 1947",
-        attachDataUrls: true,
-        to: email,
-        subject: `Ultima Redută - comanda ${nrComanda} și confirmare creare cont.`,
-        attachments: [
+      context!.drawImage(
+        imageObj,
+        0,
+        0,
+        imageObj.width,
+        imageObj.height,
+        0,
+        0,
+        canvas?.width,
+        canvas?.height
+      );
+      context!.font = "12pt Intel";
+      context!.fillStyle = "#ffffff";
+      context!.textAlign = "start";
+      context!.fillText(`${nume} ${prenume}`, 25, 200);
+      context!.font = "6pt Intel";
+      context!.fillStyle = "#ffffff";
+      context!.textAlign = "center";
+      context!.fillText(
+        `${serieUtilizator}`,
+        canvas?.width! / 2,
+        canvas.height - 10
+      );
+
+      context!.font = "9pt Intel";
+      context!.fillStyle = "#ffffff";
+      context!.textAlign = "center";
+      context!.fillText(nrMembru, canvas?.width! - 50, 200);
+
+      context!.font = "12pt Intel";
+      context!.fillStyle = "#ffffff";
+      context!.textAlign = "center";
+      context!.fillText(
+        tipAbonament === "tipAbonamnet_7" ? "Card 7 mai" : "Card 1947",
+        canvas?.width! / 2,
+        70
+      );
+      try {
+        let img = await QRCode.toDataURL(
+          `https://ultima-reduta.vercel.app/verificareMembru/${tip}/${serieUtilizator}`
+        );
+        let emailTransporter = await createTransporter();
+        await emailTransporter.sendMail({
+          from: "Ultima Redută 1947",
+          attachDataUrls: true,
+          to: email,
+          subject: `Ultima Redută - comanda ${nrComanda} și confirmare creare cont.`,
+          attachments: [
+            {
+              filename: `cardSteaua_${nrMembru}.png`,
+              path: canvas.toDataURL(),
+              cid: `cardSteaua_${nrMembru}`,
+            },
+          ],
+          html: sendQRCodeAndConfirmTemplate(img, prenume, nrComanda),
+        });
+      } catch (err) {
+        return err;
+      }
+    } else {
+      let arrayItems = "";
+      arrayItems += "<h1 style='margin: 1rem 0'>Membrii Asociați</h1>";
+      let qrCodes = [];
+      let canvasMembrii = [];
+      membrii?.forEach(async (m, j) => {
+        const canvas = createCanvas(425, 250);
+        const context = canvas.getContext("2d");
+        registerFont(
+          path.join(__dirname, "fonts/intelone-mono-font-family-regular.otf"),
           {
-            filename: "cardSteaua.png",
-            path: canvas.toDataURL(),
-            cid: "cardsteaua",
-          },
-        ],
-        html: sendQRCodeAndConfirmTemplate(
-          img,
-          prenume,
-          nrComanda,
-          canvas.toDataURL()
-        ),
+            family: "Intel",
+          }
+        );
+        context!.drawImage(
+          imageObj,
+          0,
+          0,
+          imageObj.width,
+          imageObj.height,
+          0,
+          0,
+          canvas?.width,
+          canvas?.height
+        );
+        context!.font = "12pt Intel";
+        context!.fillStyle = "#ffffff";
+        context!.textAlign = "start";
+        context!.fillText(`${m?.numeAsociat} ${m?.prenumeAsociat}`, 25, 200);
+        context!.font = "6pt Intel";
+        context!.fillStyle = "#ffffff";
+        context!.textAlign = "center";
+        context!.fillText(
+          `${m?.serieUtilizator}`,
+          canvas?.width! / 2,
+          canvas.height - 10
+        );
+
+        context!.font = "9pt Intel";
+        context!.fillStyle = "#ffffff";
+        context!.textAlign = "center";
+        context!.fillText(m?.nrMembru, canvas?.width! - 50, 200);
+
+        context!.font = "12pt Intel";
+        context!.fillStyle = "#ffffff";
+        context!.textAlign = "center";
+        context!.fillText(
+          m?.tipAbonament === "tipAbonamnet_7" ? "Card 7 mai" : "Card 1947",
+          canvas?.width! / 2,
+          70
+        );
+        canvasMembrii.push({
+          filename: `cardSteaua_${m?.nrMembru}.png`,
+          path: canvas.toDataURL(),
+          cid: `cardSteaua_${m?.nrMembru}`,
+        });
       });
-    } catch (err) {
-      return err;
+      const newCanvas = createCanvas(425, 250);
+      const context = newCanvas.getContext("2d");
+      registerFont(
+        path.join(__dirname, "fonts/intelone-mono-font-family-regular.otf"),
+        {
+          family: "Intel",
+        }
+      );
+      context!.drawImage(
+        imageObj,
+        0,
+        0,
+        imageObj.width,
+        imageObj.height,
+        0,
+        0,
+        newCanvas?.width,
+        newCanvas?.height
+      );
+      context!.font = "12pt Intel";
+      context!.fillStyle = "#ffffff";
+      context!.textAlign = "start";
+      context!.fillText(`${nume} ${prenume}`, 25, 200);
+      context!.font = "6pt Intel";
+      context!.fillStyle = "#ffffff";
+      context!.textAlign = "center";
+      context!.fillText(
+        `${serieUtilizator}`,
+        newCanvas?.width! / 2,
+        newCanvas.height - 10
+      );
+
+      context!.font = "9pt Intel";
+      context!.fillStyle = "#ffffff";
+      context!.textAlign = "center";
+      context!.fillText(nrMembru, newCanvas?.width! - 50, 200);
+
+      context!.font = "12pt Intel";
+      context!.fillStyle = "#ffffff";
+      context!.textAlign = "center";
+      context!.fillText(
+        tipAbonament === "tipAbonamnet_7" ? "Card 7 mai" : "Card 1947",
+        newCanvas?.width! / 2,
+        70
+      );
+      try {
+        membrii?.forEach(async (m) => {
+          qrCodes.push(m.qrCode);
+        });
+        arrayItems +=
+          "<table cellpadding='2' cellspacing='2' width='212' height='125' style='padding-bottom: 16px; border-collapse: collapse; border: 0px; border-spacing: 0px; font-family: Arial, Helvetica, sans-serif;'>";
+        for (let n in qrCodes) {
+          arrayItems +=
+            "<tr><td width='212' height='125' align='center'><div style='padding-bottom: 16px;text-align:center;'><img src='" +
+            qrCodes[n] +
+            "' /></div>" +
+            `<p style='padding-bottom: 16px'>${membrii[n].numeAsociat} ${membrii[n].prenumeAsociat}</p>`;
+          "</td></tr>";
+        }
+        arrayItems += "</table>";
+        let img = await QRCode.toDataURL(
+          `https://ultima-reduta.vercel.app/verificareMembru/asociat/${serieUtilizator}`
+        );
+        let emailTransporter = await createTransporter();
+        await emailTransporter.sendMail({
+          from: "Ultima Redută 1947",
+          attachDataUrls: true,
+          to: email,
+          subject: `Ultima Redută - comanda ${nrComanda} și confirmare creare cont.`,
+          attachments: [
+            {
+              filename: `cardSteaua_${nrMembru}.png`,
+              path: newCanvas.toDataURL(),
+              cid: `cardSteaua_${nrMembru}`,
+            },
+            ...canvasMembrii,
+          ],
+          html: sendQRCodeAndConfirmTemplate(
+            img,
+            prenume,
+            nrComanda,
+            arrayItems,
+            qrCodes
+          ),
+        });
+      } catch (err) {
+        return err;
+      }
     }
   });
 };

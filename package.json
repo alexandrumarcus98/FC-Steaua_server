@@ -37,6 +37,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"@types/bcrypt": "^5.0.1",
+		"@types/bcryptjs": "^2.4.6",
 		"@types/geoip-lite": "^1.4.4",
 		"@types/ip": "^1.1.2",
 		"@types/morgan": "^1.9.9",
@@ -44,7 +45,7 @@
 		"@types/nodemailer": "^6.4.14",
 		"@types/qrcode": "^1.5.5",
 		"@types/uuid": "^9.0.7",
-		"bcrypt": "^5.1.1",
+		"bcryptjs": "^2.4.3",
 		"canvas": "^2.11.2",
 		"chalk": "^5.3.0",
 		"compression": "^1.7.4",

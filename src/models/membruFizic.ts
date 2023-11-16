@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { v4 as uuidv4 } from 'uuid';
 import { IMembruFizic } from "src/global";
 import { membruAsociatSchema } from "./membruAsociat";
 
-const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
+const membruFizicSchema = new mongoose.Schema<any>({
 	email: {
 		type: String,
 		required: true,
@@ -52,12 +52,12 @@ const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
 
 
 membruFizicSchema.pre('save', async function (next: any) {
-  if (!this.isModified('password')) {
+	if (!this.isModified('password')) {
     next()
-  }
-
-	const salt = await bcrypt.genSalt(10)
-  this.password = await bcrypt.hash(this.password, salt)
+  } else {
+		const salt = await bcrypt.genSalt(10)
+		this.password = await bcrypt.hash(this.password, salt)
+	}
 })
 
 membruFizicSchema.pre("deleteOne", { document: true, query: false }, async function(next) {
@@ -69,12 +69,10 @@ membruFizicSchema.pre("deleteOne", { document: true, query: false }, async funct
 	.catch(err => next(err))
 });
 
-membruFizicSchema.methods.verifyPassword = async function (enteredPassword: string) {
-  return bcrypt.compare(enteredPassword, this.password, (err, same) => {
-		if(err) return false
-		else return same
-	})
-}
+membruFizicSchema.methods.verifyPassword = async function(password: string) {
+	return await bcrypt.compare(password, this.password)
+
+};
 
 
 const MembruFizic = mongoose.model('Membru Fizic', membruFizicSchema)
