@@ -4,7 +4,6 @@ import rateLimitMiddlewareMail from "src/utils/limiters";
 const router: Router = express.Router();
 router.route("/data").post(controllerFizic.detalii);
 router.route("/verificare").post(controllerFizic.verificare);
-router.route("/verificare/:serie").post(controllerFizic.verificareSerie);
 router.route("/:id").delete(controllerFizic.destroy);
 router
   .route("/creareCont/trimite")

@@ -8,6 +8,11 @@ router
 router
   .route("/:userId/recuperareParola/:tokenId")
   .post(controllerShared.verificarePwEmail);
-router.route("/:userId/savePw").post(controllerShared.saveNewPW);
+router
+  .route("/:userId/savePw")
+  .post(rateLimitMiddlewareMail, controllerShared.saveNewPW);
+router
+  .route("/:tip/verificare/:serie")
+  .post(controllerShared.verificareSerieMembru);
 
 export default router;

@@ -7,6 +7,7 @@ import QRCode from "qrcode";
 import { sendQRCodeAccountConfirmation } from "src/config/nodemailer/config";
 import MembruJuridic from "src/models/membruJuridic";
 import NodeGeocoder from "node-geocoder";
+import { config } from "src/config/config";
 
 export const inregistrareMembruFizicByEmail = asyncHandler(
   async (req, res): Promise<any> => {
@@ -32,8 +33,7 @@ export const inregistrareMembruFizicByEmail = asyncHandler(
     const geocoder = NodeGeocoder({
       provider: "mapbox",
       formatter: null,
-      apiKey:
-        "pk.eyJ1IjoiYWxleG1hcmN1czIyIiwiYSI6ImNsb3Jkc2N4eTB2bXMyaWxxaG84YXpndnMifQ.PjXdzSABI9li2ojsqFPr8w",
+      apiKey: config.APP_GEOCODE_APIKEY,
     });
 
     if (!email) {

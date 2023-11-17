@@ -3,7 +3,6 @@ import { inregistrareMembruJuridicByEmail } from "./utils/registerByEmail";
 import MembruJuridic from "src/models/membruJuridic";
 import { detaliiMembruJuridic } from "./utils/detalii";
 import { verificareJuridic } from "./utils/verificare";
-import { verificareSerie } from "./utils/verifySerie";
 import { sendEmailOTPFizic } from "./email/sendOTP";
 import { verificareEmail } from "./email/verify";
 import { locatieUseri } from "./utils/locatie";
@@ -34,9 +33,6 @@ export const controller = {
   },
   verificare: (req: Request, res: Response, next: NextFunction) => {
     return verificareJuridic(req, res, next);
-  },
-  verificareSerie: (req: Request, res: Response, next: NextFunction) => {
-    return verificareSerie(req, res, next);
   },
   sendOTP: (req: Request, res: Response, next: NextFunction) => {
     return sendEmailOTPFizic(req, res, next);

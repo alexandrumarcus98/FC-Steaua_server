@@ -168,8 +168,8 @@ export const sendQRCodeAndConfirmTemplate = (
   code: string,
   prenume: string,
   nrComanda: string,
-  arrayItems?: any,
-  qrCodes?: any
+  nrMembru_user: any,
+  arrayItems?: any
 ) => {
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -310,14 +310,14 @@ export const sendQRCodeAndConfirmTemplate = (
 											<div style="padding-bottom: 16px;text-align:center;">
 												<img src="${code}" id="qrCode" />
 											</div>
-											${arrayItems}
 											<table cellpadding="2" cellspacing="2" width="212" height="125" style="padding-bottom: 16px; border-collapse: collapse; border: 0px; border-spacing: 0px; font-family: Arial, Helvetica, sans-serif;">
 												<tr>
 													<td width="212" height="125" align="center">
-														<img src="cid:cardsteaua" alt="Card Steaua" border="0" width="212" height="125" style="display: block; width: 212px; max-width: 212px; min-width: 125px;" title="Card Steaua">
+														<img src="cid:cardSteaua_${nrMembru_user}" alt="Card Steaua" border="0" width="212" height="125" style="display: block; width: 212px; max-width: 212px; min-width: 125px;" title="Card Steaua">
 													</td>
 												</tr>
 											</table>
+											${arrayItems}
 											<p style="padding-bottom: 16px">Mulțumim, <br>Ultima Redută 1947</p>
 										</div>
 									</div>
@@ -497,8 +497,8 @@ const createTransporter = async () => {
       port: 465,
       host: "smtp.gmail.com",
       auth: {
-        user: "alexandru.marcus98@gmail.com",
-        pass: "rnir tyly rwqq gpwo ",
+        user: config.APP_USER_EMAIL,
+        pass: config.APP_USER_EMAIL_PW,
       },
       secure: true,
     });
@@ -554,14 +554,14 @@ export const sendQRCodeAccountConfirmation = async (
 ) => {
   loadImage(path.join(__dirname, "images/card.png")).then(async (imageObj) => {
     if (!membrii.length) {
-      const canvas = createCanvas(425, 250);
-      const context = canvas.getContext("2d");
       registerFont(
-        path.join(__dirname, "fonts/intelone-mono-font-family-regular.otf"),
+        path.join(__dirname, "/fonts/intelone-mono-font-family-regular.otf"),
         {
           family: "Intel",
         }
       );
+      const canvas = createCanvas(425, 250);
+      const context = canvas.getContext("2d");
       context!.drawImage(
         imageObj,
         0,
@@ -616,7 +616,7 @@ export const sendQRCodeAccountConfirmation = async (
               cid: `cardSteaua_${nrMembru}`,
             },
           ],
-          html: sendQRCodeAndConfirmTemplate(img, prenume, nrComanda),
+          html: sendQRCodeAndConfirmTemplate(img, prenume, nrComanda, nrMembru),
         });
       } catch (err) {
         return err;
@@ -627,14 +627,14 @@ export const sendQRCodeAccountConfirmation = async (
       let qrCodes = [];
       let canvasMembrii = [];
       membrii?.forEach(async (m, j) => {
-        const canvas = createCanvas(425, 250);
-        const context = canvas.getContext("2d");
         registerFont(
-          path.join(__dirname, "fonts/intelone-mono-font-family-regular.otf"),
+          path.join(__dirname, "/fonts/intelone-mono-font-family-regular.otf"),
           {
             family: "Intel",
           }
         );
+        const canvas = createCanvas(425, 250);
+        const context = canvas.getContext("2d");
         context!.drawImage(
           imageObj,
           0,
@@ -678,14 +678,14 @@ export const sendQRCodeAccountConfirmation = async (
           cid: `cardSteaua_${m?.nrMembru}`,
         });
       });
-      const newCanvas = createCanvas(425, 250);
-      const context = newCanvas.getContext("2d");
       registerFont(
-        path.join(__dirname, "fonts/intelone-mono-font-family-regular.otf"),
+        path.join(__dirname, "/fonts/intelone-mono-font-family-regular.otf"),
         {
           family: "Intel",
         }
       );
+      const newCanvas = createCanvas(425, 250);
+      const context = newCanvas.getContext("2d");
       context!.drawImage(
         imageObj,
         0,
@@ -725,13 +725,13 @@ export const sendQRCodeAccountConfirmation = async (
       );
       try {
         membrii?.forEach(async (m) => {
-          qrCodes.push(m.qrCode);
+          qrCodes?.push(m.qrCode);
         });
         arrayItems +=
-          "<table cellpadding='2' cellspacing='2' width='212' height='125' style='padding-bottom: 16px; border-collapse: collapse; border: 0px; border-spacing: 0px; font-family: Arial, Helvetica, sans-serif;'>";
+          "<table cellpadding='2' cellspacing='2' width='212' height='125' style='padding-bottom: 16px; border-collapse: collapse; border: 1px solid gray; border-spacing: 2px; font-family: Arial, Helvetica, sans-serif;'>";
         for (let n in qrCodes) {
           arrayItems +=
-            "<tr><td width='212' height='125' align='center'><div style='padding-bottom: 16px;text-align:center;'><img src='" +
+            "<tr align='center' style='text-align: center;'><td width='212' height='125' align='center' style='text-align: center;'><div style='padding-bottom: 16px;text-align:center;'><img src='" +
             qrCodes[n] +
             "' /></div>" +
             `<p style='padding-bottom: 16px'>${membrii[n].numeAsociat} ${membrii[n].prenumeAsociat}</p>`;
@@ -759,8 +759,8 @@ export const sendQRCodeAccountConfirmation = async (
             img,
             prenume,
             nrComanda,
-            arrayItems,
-            qrCodes
+            nrMembru,
+            arrayItems
           ),
         });
       } catch (err) {
