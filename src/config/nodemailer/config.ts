@@ -553,7 +553,7 @@ export const sendQRCodeAccountConfirmation = async (
   membrii?: Array<IMembruAsociat>
 ) => {
   loadImage(path.join(__dirname, "images/card.png")).then(async (imageObj) => {
-    if (!membrii.length) {
+    if (!membrii?.length || !membrii) {
       registerFont(
         path.join(__dirname, "/fonts/intelone-mono-font-family-regular.otf"),
         {
