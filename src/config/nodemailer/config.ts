@@ -310,7 +310,7 @@ export const sendQRCodeAndConfirmTemplate = (
 											<div style="padding-bottom: 16px;text-align:center;">
 												<img src="${code}" id="qrCode" />
 											</div>
-											<table cellpadding="2" cellspacing="2" width="212" height="125" style="padding-bottom: 16px; border-collapse: collapse; border: 0px; border-spacing: 0px; font-family: Arial, Helvetica, sans-serif;">
+											<table cellpadding="2" cellspacing="2" height="125" style="padding-bottom: 16px; border-collapse: collapse; border: 0px; border-spacing: 0px; font-family: Arial, Helvetica, sans-serif; width: 100%;">
 												<tr>
 													<td width="212" height="125" align="center">
 														<img src="cid:cardSteaua_${nrMembru_user}" alt="Card Steaua" border="0" width="212" height="125" style="display: block; width: 212px; max-width: 212px; min-width: 125px;" title="Card Steaua">
@@ -662,7 +662,7 @@ export const sendQRCodeAccountConfirmation = async (
         context!.font = "9pt Intel";
         context!.fillStyle = "#ffffff";
         context!.textAlign = "center";
-        context!.fillText(m?.nrMembru, canvas?.width! - 50, 200);
+        context!.fillText(m?.nrMembru, canvas?.width! - 75, 200);
 
         context!.font = "12pt Intel";
         context!.fillStyle = "#ffffff";
@@ -713,7 +713,7 @@ export const sendQRCodeAccountConfirmation = async (
       context!.font = "9pt Intel";
       context!.fillStyle = "#ffffff";
       context!.textAlign = "center";
-      context!.fillText(nrMembru, newCanvas?.width! - 50, 200);
+      context!.fillText(nrMembru, newCanvas?.width! - 75, 200);
 
       context!.font = "12pt Intel";
       context!.fillStyle = "#ffffff";
@@ -728,7 +728,7 @@ export const sendQRCodeAccountConfirmation = async (
           qrCodes?.push(m.qrCode);
         });
         arrayItems +=
-          "<table cellpadding='2' cellspacing='2' width='212' height='125' style='padding-bottom: 16px; border-collapse: collapse; border: 1px solid gray; border-spacing: 2px; font-family: Arial, Helvetica, sans-serif;'>";
+          "<table cellpadding='2' cellspacing='2' height='125' style='padding-bottom: 16px; border-collapse: collapse; border: 1px solid gray; border-spacing: 2px; font-family: Arial, Helvetica, sans-serif; width: 100%;'>";
         for (let n in qrCodes) {
           arrayItems +=
             "<tr align='center' style='text-align: center;'><td width='212' height='125' align='center' style='text-align: center;'><div style='padding-bottom: 16px;text-align:center;'><img src='" +

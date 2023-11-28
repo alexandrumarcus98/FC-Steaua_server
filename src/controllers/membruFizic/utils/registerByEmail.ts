@@ -57,9 +57,14 @@ export const inregistrareMembruFizicByEmail = asyncHandler(
       const lMembriiFizici = membriiFizici?.length;
       const lMemmbriiAsociati = membriiAsociati.length;
       const lMembriiJuridici = membriiJuridici.length;
-      let nrMembru = (lMembriiFizici + lMemmbriiAsociati + lMembriiJuridici + 1)
-        .toString()
-        .padStart(7, "0");
+      let nrMembru = "";
+      if (tipAbonament === "tipAbonamnet_7") nrMembru = "(ST) ";
+      else nrMembru = "(ONG) ";
+      nrMembru = nrMembru.concat(
+        (lMembriiFizici + lMemmbriiAsociati + lMembriiJuridici + 1)
+          .toString()
+          .padStart(7, "0")
+      );
       const user = await MembruFizic.create({
         password: parola,
         email: email,
@@ -101,19 +106,19 @@ export const inregistrareMembruFizicByEmail = asyncHandler(
               const newImg = await QRCode.toDataURL(
                 `https://ultima-reduta.vercel.app/verificareMembru/${membru?.serieUtilizator}`
               );
+              let nrMembru = "";
+              if (tipAbonament === "tipAbonamnet_7") nrMembru = "(ST) ";
+              else nrMembru = "(ONG) ";
+              nrMembru = nrMembru.concat(
+                (lMembriiFizici + lMemmbriiAsociati + lMembriiJuridici + 1)
+                  .toString()
+                  .padStart(7, "0")
+              );
               if (newImg?.length)
                 if (response[0])
                   return {
                     ...membru,
-                    nrMembru: (
-                      lMembriiFizici +
-                      lMemmbriiAsociati +
-                      lMembriiJuridici +
-                      2 +
-                      i
-                    )
-                      .toString()
-                      .padStart(7, "0"),
+                    nrMembru: nrMembru,
                     tipAbonament: tipAbonament,
                     locatie: response[0] || null,
                     parentUserId: user?._id,
@@ -122,15 +127,7 @@ export const inregistrareMembruFizicByEmail = asyncHandler(
                 else
                   return {
                     ...membru,
-                    nrMembru: (
-                      lMembriiFizici +
-                      lMemmbriiAsociati +
-                      lMembriiJuridici +
-                      2 +
-                      i
-                    )
-                      .toString()
-                      .padStart(7, "0"),
+                    nrMembru: nrMembru,
                     tipAbonament: tipAbonament,
                     parentUserId: user?._id,
                     qrCode: newImg,
@@ -138,15 +135,7 @@ export const inregistrareMembruFizicByEmail = asyncHandler(
               else
                 return {
                   ...membru,
-                  nrMembru: (
-                    lMembriiFizici +
-                    lMemmbriiAsociati +
-                    lMembriiJuridici +
-                    2 +
-                    i
-                  )
-                    .toString()
-                    .padStart(7, "0"),
+                  nrMembru: nrMembru,
                   tipAbonament: tipAbonament,
                   parentUserId: user?._id,
                   qrCode: newImg || "",

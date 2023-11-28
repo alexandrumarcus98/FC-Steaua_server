@@ -10,8 +10,6 @@ export const membruAsociatSchema = new mongoose.Schema<IMembruAsociat>({
 	},
 	emailAsociat: {
 		type: String,
-		required: true,
-		unique: true
 	},
 	nrTelAsociat: {
 		type: String
