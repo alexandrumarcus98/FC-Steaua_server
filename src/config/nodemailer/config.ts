@@ -496,14 +496,15 @@ const createTransporter = async () => {
     const transport = nodemailer?.createTransport({
       port: 465,
       host: "smtp.zoho.com",
-      auth: {
-        user: "alexandru.marcus@ultimareduta.ro",
-        pass: "Hivw 8Wfk g1tE",
-      },
       secure: true,
+      auth: {
+        user: config.APP_USER_EMAIL,
+        pass: config.APP_USER_EMAIL_PW,
+      },
     });
     return transport;
   } catch (err) {
+    console.log(err);
     return err;
   }
 };
@@ -512,12 +513,13 @@ export const sendVerificationCode = async (email: string, token: string) => {
   try {
     let emailTransporter = await createTransporter();
     await emailTransporter.sendMail({
-      from: "Ultima Redută 1947",
+      from: `"Ultima Redută 1947" <${config.APP_USER_EMAIL}>`,
       to: email,
       subject: "Ultima Redută - Verificare Cod Înregistrare",
       html: sendOTPTemplate(token),
     });
   } catch (err) {
+    console.log(err);
     return err;
   }
 };
@@ -531,7 +533,7 @@ export const sendPasswordForgotEmail = async (
   try {
     let emailTransporter = await createTransporter();
     await emailTransporter.sendMail({
-      from: "Ultima Redută 1947",
+      from: `"Ultima Redută 1947" <${config.APP_USER_EMAIL}>`,
       to: email,
       subject: "Ultima Redută - Recuperare Parolă",
       html: forgotPasswordEmailTemplate(token, userId, prenume),
@@ -605,7 +607,7 @@ export const sendQRCodeAccountConfirmation = async (
         );
         let emailTransporter = await createTransporter();
         await emailTransporter.sendMail({
-          from: "Ultima Redută 1947",
+          from: `"Ultima Redută 1947" <${config.APP_USER_EMAIL}>`,
           attachDataUrls: true,
           to: email,
           subject: `Ultima Redută - comanda ${nrComanda} și confirmare creare cont.`,
@@ -743,7 +745,7 @@ export const sendQRCodeAccountConfirmation = async (
         );
         let emailTransporter = await createTransporter();
         await emailTransporter.sendMail({
-          from: "Ultima Redută 1947",
+          from: `"Ultima Redută 1947" <${config.APP_USER_EMAIL}>`,
           attachDataUrls: true,
           to: email,
           subject: `Ultima Redută - comanda ${nrComanda} și confirmare creare cont.`,
