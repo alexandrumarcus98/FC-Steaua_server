@@ -495,10 +495,10 @@ const createTransporter = async () => {
   try {
     const transport = nodemailer?.createTransport({
       port: 465,
-      host: "smtp.gmail.com",
+      host: "smtp.zoho.com",
       auth: {
-        user: config.APP_USER_EMAIL,
-        pass: config.APP_USER_EMAIL_PW,
+        user: "alexandru.marcus@ultimareduta.ro",
+        pass: "Hivw 8Wfk g1tE",
       },
       secure: true,
     });
