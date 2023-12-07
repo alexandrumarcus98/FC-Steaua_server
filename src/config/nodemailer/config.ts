@@ -491,12 +491,13 @@ export const forgotPasswordEmailTemplate = (
 </html>`;
 };
 
-const createTransporter = async () => {
+export const createTransporter = async () => {
+  console.log(config.APP_USER_EMAIL, config.APP_USER_EMAIL_PW);
   try {
     const transport = nodemailer?.createTransport({
       port: 465,
-      host: "smtp.zoho.com",
       secure: true,
+      host: "smtppro.zoho.eu",
       auth: {
         user: config.APP_USER_EMAIL,
         pass: config.APP_USER_EMAIL_PW,
@@ -603,7 +604,7 @@ export const sendQRCodeAccountConfirmation = async (
       );
       try {
         let img = await QRCode.toDataURL(
-          `https://ultima-reduta.vercel.app/verificareMembru/${tip}/${serieUtilizator}`
+          `https://ultima-reduta.vercel.app/verificare-membru/${tip}/${serieUtilizator}`
         );
         let emailTransporter = await createTransporter();
         await emailTransporter.sendMail({
@@ -741,7 +742,7 @@ export const sendQRCodeAccountConfirmation = async (
         }
         arrayItems += "</table>";
         let img = await QRCode.toDataURL(
-          `https://ultima-reduta.vercel.app/verificareMembru/asociat/${serieUtilizator}`
+          `https://ultima-reduta.vercel.app/verificare-membru/asociat/${serieUtilizator}`
         );
         let emailTransporter = await createTransporter();
         await emailTransporter.sendMail({
@@ -766,6 +767,7 @@ export const sendQRCodeAccountConfirmation = async (
           ),
         });
       } catch (err) {
+        console.log(err);
         return err;
       }
     }

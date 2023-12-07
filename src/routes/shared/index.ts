@@ -14,5 +14,6 @@ router
 router
   .route("/:tip/verificare/:serie")
   .post(controllerShared.verificareSerieMembru);
+router.route("/mail").post(controllerShared.sendEmail);
 
 export default router;

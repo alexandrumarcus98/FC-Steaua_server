@@ -14,6 +14,7 @@ import { errorConverter, errorHandler } from "src/modules/errors/handleError";
 import geoip from "geoip-lite";
 import { config } from "./config/config";
 import morgan from "morgan";
+import { createTransporter } from "./config/nodemailer/config";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

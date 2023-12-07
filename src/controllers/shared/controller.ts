@@ -3,6 +3,7 @@ import { sendEmailResetPassword } from "./utils/password";
 import { verifyEmailForgotPassword } from "./utils/verifyEmail";
 import { saveNewPassword } from "./utils/savePw";
 import { verificareSerieMembru } from "./utils/verificareSerie";
+import { trimiteMailTest } from "./utils/trimiteMailTest";
 
 export const controller = {
   trimitePwEmail: (req: Request, res: Response, next: NextFunction) => {
@@ -16,5 +17,8 @@ export const controller = {
   },
   verificareSerieMembru: (req: Request, res: Response, next: NextFunction) => {
     return verificareSerieMembru(req, res, next);
+  },
+  sendEmail: (req: Request, res: Response, next: NextFunction) => {
+    return trimiteMailTest(req, res, next);
   },
 };

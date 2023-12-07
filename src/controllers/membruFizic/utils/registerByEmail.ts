@@ -104,7 +104,7 @@ export const inregistrareMembruFizicByEmail = asyncHandler(
                 `${membru.adresaAsociat}`
               );
               const newImg = await QRCode.toDataURL(
-                `https://ultima-reduta.vercel.app/verificareMembru/${membru?.serieUtilizator}`
+                `https://ultima-reduta.vercel.app/verificare-membru/${membru?.serieUtilizator}`
               );
               let nrMembru = "";
               if (tipAbonament === "tipAbonamnet_7") nrMembru = "(ST) ";
