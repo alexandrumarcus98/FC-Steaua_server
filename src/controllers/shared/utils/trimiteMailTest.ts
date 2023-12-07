@@ -14,7 +14,6 @@ export const trimiteMailTest: any = asyncHandler(
       });
       return res.status(201).json({ msg: "YES!!!" });
     } catch (err) {
-      console.log(err);
       return res.status(201).json(err);
     }
   }

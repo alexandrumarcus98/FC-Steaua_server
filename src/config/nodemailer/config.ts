@@ -492,7 +492,6 @@ export const forgotPasswordEmailTemplate = (
 };
 
 export const createTransporter = async () => {
-  console.log(config.APP_USER_EMAIL, config.APP_USER_EMAIL_PW);
   try {
     const transport = nodemailer?.createTransport({
       port: 465,
@@ -505,7 +504,6 @@ export const createTransporter = async () => {
     });
     return transport;
   } catch (err) {
-    console.log(err);
     return err;
   }
 };
@@ -520,7 +518,6 @@ export const sendVerificationCode = async (email: string, token: string) => {
       html: sendOTPTemplate(token),
     });
   } catch (err) {
-    console.log(err);
     return err;
   }
 };
@@ -767,7 +764,6 @@ export const sendQRCodeAccountConfirmation = async (
           ),
         });
       } catch (err) {
-        console.log(err);
         return err;
       }
     }
