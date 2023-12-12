@@ -5,6 +5,7 @@ import statusRouter from "./status";
 import fizicRouter from "./fizic";
 import juridicRouter from "./juridic";
 import sharedRouter from "./shared";
+import adminRouter from "./admin";
 const router: Router = express.Router();
 interface IRoute {
   path: string;
@@ -35,6 +36,10 @@ const defaultIRoute: IRoute[] = [
   {
     path: "/shared",
     route: sharedRouter,
+  },
+  {
+    path: "/admin",
+    route: adminRouter,
   },
 ];
 

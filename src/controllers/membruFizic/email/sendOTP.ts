@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import { config } from "src/config/config";
-import { sendVerificationCode } from "src/config/nodemailer/config";
+import { sendVerificationCodeRegister } from "src/config/nodemailer/config";
 import TokenEmailOTP from "src/models/tokenEmail";
 
 export const sendEmailOTPFizic: any = asyncHandler(
@@ -35,7 +35,7 @@ export const sendEmailOTPFizic: any = asyncHandler(
         token: tokenNew,
       });
       if (token) {
-        sendVerificationCode(email, number.toString())
+        sendVerificationCodeRegister(email, number.toString())
           .then(() => res.status(201).json({ message: "Email a fost trimis." }))
           .catch(() => res.status(404).json({ message: "error" }));
       }

@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IMembruFizic } from "src/global";
 import { membruAsociatSchema } from "./membruAsociat";
 
-const membruFizicSchema = new mongoose.Schema<any>({
+const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
 	email: {
 		type: String,
 		required: true,

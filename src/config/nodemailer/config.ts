@@ -508,13 +508,30 @@ export const createTransporter = async () => {
   }
 };
 
+export const sendVerificationCodeRegister = async (
+  email: string,
+  token: string
+) => {
+  try {
+    let emailTransporter = await createTransporter();
+    await emailTransporter.sendMail({
+      from: `"Ultima Redută 1947" <${config.APP_USER_EMAIL}>`,
+      to: email,
+      subject: "Ultima Redută 1947 - Verificare Cod Înregistrare",
+      html: sendOTPTemplate(token),
+    });
+  } catch (err) {
+    return err;
+  }
+};
+
 export const sendVerificationCode = async (email: string, token: string) => {
   try {
     let emailTransporter = await createTransporter();
     await emailTransporter.sendMail({
       from: `"Ultima Redută 1947" <${config.APP_USER_EMAIL}>`,
       to: email,
-      subject: "Ultima Redută - Verificare Cod Înregistrare",
+      subject: "Ultima Redută 1947 - Verificare Cod Admin",
       html: sendOTPTemplate(token),
     });
   } catch (err) {
@@ -533,7 +550,7 @@ export const sendPasswordForgotEmail = async (
     await emailTransporter.sendMail({
       from: `"Ultima Redută 1947" <${config.APP_USER_EMAIL}>`,
       to: email,
-      subject: "Ultima Redută - Recuperare Parolă",
+      subject: "Ultima Redută 1947 - Recuperare Parolă",
       html: forgotPasswordEmailTemplate(token, userId, prenume),
     });
   } catch (err) {
