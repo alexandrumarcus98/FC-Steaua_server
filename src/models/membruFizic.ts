@@ -47,7 +47,8 @@ const membruFizicSchema = new mongoose.Schema<IMembruFizic>({
 		type: membruAsociatSchema,
 		ref: 'Membru Asociat'
 	}],
-	semnatura: String
+	semnatura: String,
+	mgrs: Object
 })
 
 
@@ -71,7 +72,6 @@ membruFizicSchema.pre("deleteOne", { document: true, query: false }, async funct
 
 membruFizicSchema.methods.verifyPassword = async function(password: string) {
 	return await bcrypt.compare(password, this.password)
-
 };
 
 

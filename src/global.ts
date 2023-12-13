@@ -22,6 +22,8 @@ export interface IMembruFizic extends Document {
   serieUtilizator: string;
   nrMembru: string;
   semnatura: string;
+  mgrs: Object;
+  verifyPassword: (pw: string) => any;
 }
 
 export interface IMembruAsociat extends Document {
@@ -63,6 +65,7 @@ export interface IMembruJuridic extends Document {
   IBAN: string;
   codPostal: string;
   semnatura: string;
+  mgrs: Object;
   verifyPassword?: (p: string) => any;
   password?: string;
 }

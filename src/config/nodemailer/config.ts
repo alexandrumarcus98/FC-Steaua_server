@@ -521,6 +521,7 @@ export const sendVerificationCodeRegister = async (
       html: sendOTPTemplate(token),
     });
   } catch (err) {
+    console.log(config.APP_USER_EMAIL_PW);
     return err;
   }
 };
@@ -535,6 +536,8 @@ export const sendVerificationCode = async (email: string, token: string) => {
       html: sendOTPTemplate(token),
     });
   } catch (err) {
+    console.log(err, 1);
+    console.log(config.APP_USER_EMAIL_PW);
     return err;
   }
 };
